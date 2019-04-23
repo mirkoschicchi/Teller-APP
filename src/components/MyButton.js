@@ -32,7 +32,7 @@ MyButton.propTypes = {
 		width: "50%",
 		padding:5,
 		margin: 5,
-		backgroundColor: '#08d360',
+		backgroundColor: '#4f94a0',
 		borderRadius:20,
 		borderWidth: 3
 	}

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Button from '@material-ui/core/Button';
 
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
@@ -12,7 +13,6 @@ import {
     Text,
     TextInput,
     View,
-    Button,
     StyleSheet
 } from 'react-native';
 
@@ -93,12 +93,12 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         textAlign:'center',
         padding:15,
-        color: 'white'
+        color: '#ffffff'
     },
     container: {
         borderWidth:2,
         padding: 20,
-        backgroundColor:'#672def',
+        backgroundColor:'#724a6f',
         flex:1,
     }
   });

@@ -39,7 +39,7 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: '#ed8702',
+    backgroundColor: '#ffc90e',
     width: '100%',
     height: 40,
     alignItems:'center',

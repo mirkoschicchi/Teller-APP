@@ -9,6 +9,7 @@ import emailImg from '../images/email.png';
 
 import UserInput from './UserInput.js';
 import MyButton from './MyButton.js';
+import MyPicker from './MyPicker.js';
 
 import {
     ScrollView,
@@ -16,7 +17,8 @@ import {
     TextInput,
     View,
     Button,
-    StyleSheet
+    StyleSheet,
+    Picker
 } from 'react-native';
 
 export default class SignUp extends Component {
@@ -31,19 +33,19 @@ export default class SignUp extends Component {
                 <Text style={styles.titleStyle}>Sign-Up Page</Text>
                 <View style={styles.inputContainer}>
                     <UserInput
-                        style={{flex:1}}
+                        style={{width:'70%'}}
                         source={usernameImg}
                         placeholder={"First Name"}>
                     </UserInput>
                     <UserInput
-                        style={{flex:1}}
+                        style={{width:'50%'}}
                         source={usernameImg}
                         placeholder={"Last Name"}>
                     </UserInput>
                 </View>
                 <View style={styles.inputContainer}>
                     <DatePicker
-                        style={{width: '50%', backgroundColor:'#ed8702', borderWidth:3}}
+                        style={{flex: 1, backgroundColor:'#ffc90e', borderWidth:3, margin: 5}}
                         androidMode='calendar'
                         date={this.state.date}
                         mode="date"
@@ -54,19 +56,21 @@ export default class SignUp extends Component {
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 10,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 10
-                        }
-                        // ... You can check the source to find the other keys.
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 10,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 10
+                            }
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
                     />
+                    <MyPicker style={{margin:50,}}>
+
+                    </MyPicker>
                 </View>       
                 <UserInput
                     source={emailImg}
@@ -99,12 +103,11 @@ export default class SignUp extends Component {
 
 const styles = StyleSheet.create({	
 	inputContainer: {
-		flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         borderWidth:2,
-        margin: 5
+        marginBottom: 5
     },
     titleStyle : {
         fontSize:40, 
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
     },
     container: {
         padding: 20,
-        backgroundColor:'#672def',
+        backgroundColor:'#724a6f',
         flex:1,
     }
   });
