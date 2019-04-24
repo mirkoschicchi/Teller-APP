@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image} from 'react-native';
+
+import MyButton from './MyButton.js';
 
 export default class Home extends Component {
     static navigationOptions = {
@@ -11,12 +13,41 @@ export default class Home extends Component {
     
     render() {
         return(
-            <View>
-                <Text>Ciao</Text>
-                <Button title={"Logout"} 
-                    onPress={() => this.props.navigation.navigate('Login')}
-                />
-            </View>
+            <ScrollView style={styles.container}>
+                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                <MyButton 
+                    text={'Record Page'}
+                    onPress={() => this.props.navigation.navigate('Login')}>
+                </MyButton>
+            </ScrollView>
         );
     }
 }
+
+const styles = StyleSheet.create({	
+	buttonStyleContainer: {
+		flex: 1,
+        flexDirection: 'row',
+        margin: 5,
+        borderWidth:3
+    },
+    titleStyle : {
+        fontSize:40, 
+        fontWeight:'bold',
+        textAlign:'center',
+        padding:15,
+        color: '#ffffff'
+    },
+    container: {
+        borderWidth:15,
+        backgroundColor:'#724a6f',
+        borderColor: '#000000',
+    },
+    iconStyle: {
+        position: 'absolute',
+        width: 80,
+        height: 80,
+        top: -5,
+        left: -10
+    }
+  });

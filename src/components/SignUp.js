@@ -18,7 +18,8 @@ import {
     View,
     Button,
     StyleSheet,
-    Picker
+    Picker,
+    Image
 } from 'react-native';
 
 export default class SignUp extends Component {
@@ -30,22 +31,21 @@ export default class SignUp extends Component {
     render() {
         return(
             <ScrollView style={styles.container}>
-                <Text style={styles.titleStyle}>Sign-Up Page</Text>
+                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                <Text style={styles.titleStyle}>Sign-Up</Text>
                 <View style={styles.inputContainer}>
                     <UserInput
-                        style={{width:'70%'}}
                         source={usernameImg}
                         placeholder={"First Name"}>
                     </UserInput>
                     <UserInput
-                        style={{width:'50%'}}
                         source={usernameImg}
                         placeholder={"Last Name"}>
                     </UserInput>
                 </View>
                 <View style={styles.inputContainer}>
                     <DatePicker
-                        style={{flex: 1, backgroundColor:'#ffc90e', borderWidth:3, margin: 5}}
+                        style={{flex: 1, backgroundColor:'#ffc90e', borderWidth:3, margin: 5 }}
                         androidMode='calendar'
                         date={this.state.date}
                         mode="date"
@@ -92,7 +92,7 @@ export default class SignUp extends Component {
                     />
                     <MyButton
                         text={"Sign-Up"}
-                        onPress={() => this.handleLogin()}
+                        onPress={() => this.props.navigation.navigate('Home')}
                     />
                 </View>                 
             </ScrollView>
@@ -104,10 +104,9 @@ export default class SignUp extends Component {
 const styles = StyleSheet.create({	
 	inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
         borderWidth:2,
-        marginBottom: 5
+        margin: 5
     },
     titleStyle : {
         fontSize:40, 
@@ -117,8 +116,15 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     container: {
-        padding: 20,
+        borderWidth:15,
         backgroundColor:'#724a6f',
-        flex:1,
+        borderColor: '#000000',
+    },
+    iconStyle: {
+        position: 'absolute',
+        width: 80,
+        height: 80,
+        top: -5,
+        left: -10
     }
   });

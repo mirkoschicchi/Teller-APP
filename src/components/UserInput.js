@@ -25,13 +25,14 @@ export default class UserInput extends Component {
 }
 
 UserInput.propTypes = {
-  source: PropTypes.number.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  onChangeText: PropTypes.func,
-  secureTextEntry: PropTypes.bool,
-  autoCorrect: PropTypes.bool,
-  autoCapitalize: PropTypes.string,
-  returnKeyType: PropTypes.string,
+    style: PropTypes.object,
+    source: PropTypes.number.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    onChangeText: PropTypes.func,
+    secureTextEntry: PropTypes.bool,
+    autoCorrect: PropTypes.bool,
+    autoCapitalize: PropTypes.string,
+    returnKeyType: PropTypes.string,
 };
 
 const DEVICE_WIDTH = Dimensions.get('window').width;

@@ -19,7 +19,7 @@ export default class MyPicker extends Component {
                     onValueChange={(itemValue, itemIndex) =>
                         this.setState({gender: itemValue})
                     }>
-                    <Picker.Item label="Male" value="Male" />
+                    <Picker.Item label="Male" value="Male"/>
                     <Picker.Item label="Female" value="Female" />
                 </Picker>
             </View>

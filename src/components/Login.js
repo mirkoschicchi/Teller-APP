@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import Button from '@material-ui/core/Button';
 
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
@@ -13,7 +12,8 @@ import {
     Text,
     TextInput,
     View,
-    StyleSheet
+    StyleSheet,
+    Image
 } from 'react-native';
 
 export default class Login extends Component {
@@ -52,15 +52,18 @@ export default class Login extends Component {
     render() {
         return (
             <ScrollView style={styles.container} >
-                <Text style={styles.titleStyle}>Login Page</Text>
+                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                <Text style={styles.titleStyle}>Login</Text>
                 <UserInput
                     source={usernameImg}
+                    style={{margin:5}}
                     placeholder={"Username"}
                     onChangeText={(username) => this.setState({username: username})}
                     value={this.state.username}>
                 </UserInput>
                 <UserInput
                     source={passwordImg}
+                    style={{margin:5}}
                     placeholder={"Password"}
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({password: password})}>
@@ -96,9 +99,15 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     container: {
-        borderWidth:2,
-        padding: 20,
+        borderWidth:15,
         backgroundColor:'#724a6f',
-        flex:1,
+        borderColor: '#000000',
+    },
+    iconStyle: {
+        position: 'absolute',
+        width: 80,
+        height: 80,
+        top: -5,
+        left: -10
     }
   });
