@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image} from 'react-native';
 
-import MyButton from './MyButton.js';
+import MyButton from '../components/MyButton';
 
 export default class Home extends Component {
     static navigationOptions = {
@@ -17,7 +17,7 @@ export default class Home extends Component {
                 <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                 <MyButton 
                     text={'Record Page'}
-                    onPress={() => this.props.navigation.navigate('Login')}>
+                    onPress={() => this.props.navigation.navigate('RecordPage')}>
                 </MyButton>
             </ScrollView>
         );

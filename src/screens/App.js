@@ -5,12 +5,14 @@ import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import Home from './Home.js';
 import Login from './Login.js';
 import SignUp from './SignUp.js';
+import RecordPage from './RecordPage.js';
 
 const AppNavigator = createSwitchNavigator(
     {
       Home: Home,
       Login: Login,
-      SignUp: SignUp
+      SignUp: SignUp,
+      RecordPage: RecordPage
     },
     {
       initialRouteName: "Login"

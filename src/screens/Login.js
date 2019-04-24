@@ -4,8 +4,8 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
 
-import UserInput from './UserInput.js';
-import MyButton from './MyButton.js';
+import UserInput from '../components/UserInput.js';
+import MyButton from '../components/MyButton.js';
 
 import {
     ScrollView,
@@ -15,6 +15,7 @@ import {
     StyleSheet,
     Image
 } from 'react-native';
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 export default class Login extends Component {
 	static navigationOptions = {
@@ -78,7 +79,6 @@ export default class Login extends Component {
                         onPress={() => this.handleLogin()}
                     />
                 </View>
-                
             </ScrollView>
             )
     }

@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import DatePicker from 'react-native-datepicker'
- 
 
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
 import emailImg from '../images/email.png';
 
-import UserInput from './UserInput.js';
-import MyButton from './MyButton.js';
-import MyPicker from './MyPicker.js';
+import UserInput from '../components/UserInput';
+import MyButton from '../components/MyButton';
+import MyPicker from '../components/MyPicker';
+import DatePicker from '../components/datepicker';
 
 import {
     ScrollView,

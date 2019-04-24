@@ -18,7 +18,7 @@ export default class MyButton extends Component {
 MyButton.propTypes = {
 	text: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
-  };
+};
   
   const styles = StyleSheet.create({
 	textStyle: {
