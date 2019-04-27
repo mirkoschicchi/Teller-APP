@@ -43,6 +43,7 @@
 		4BE2C560ACFB4D5AA4AABE6F /* libRNGestureHandler-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6278080B114469B85F5BE00 /* libRNGestureHandler-tvOS.a */; };
 		C868421AD3C74B2BB524E44A /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 071ED37BBED44C13BEC679A7 /* libRNAudio.a */; };
 		3B2CDAA9F86F4547B093E603 /* libRNAudioRecord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8897DAD17C45DEA76C07B9 /* libRNAudioRecord.a */; };
+		67C0BBA848D646AD871A7599 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B495990EB04EE583DE618B /* libRNSound.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,6 +358,8 @@
 		071ED37BBED44C13BEC679A7 /* libRNAudio.a */ = {isa = PBXFileReference; name = "libRNAudio.a"; path = "libRNAudio.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		4943B838CC2F4EB180479593 /* RNAudioRecord.xcodeproj */ = {isa = PBXFileReference; name = "RNAudioRecord.xcodeproj"; path = "../node_modules/react-native-audio-record/ios/RNAudioRecord.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		CB8897DAD17C45DEA76C07B9 /* libRNAudioRecord.a */ = {isa = PBXFileReference; name = "libRNAudioRecord.a"; path = "libRNAudioRecord.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		03F7DB4D14AD42409E166C49 /* RNSound.xcodeproj */ = {isa = PBXFileReference; name = "RNSound.xcodeproj"; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		F5B495990EB04EE583DE618B /* libRNSound.a */ = {isa = PBXFileReference; name = "libRNSound.a"; path = "libRNSound.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -388,6 +391,7 @@
 				3E994A4A6F3C49668BDD5DD8 /* libRNGestureHandler.a in Frameworks */,
 				C868421AD3C74B2BB524E44A /* libRNAudio.a in Frameworks */,
 				3B2CDAA9F86F4547B093E603 /* libRNAudioRecord.a in Frameworks */,
+				67C0BBA848D646AD871A7599 /* libRNSound.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,6 +585,7 @@
 				D9D8B475D1F14445AF22CD7D /* RNGestureHandler.xcodeproj */,
 				20D7E6D9A2374B4EAFDED8BA /* RNAudio.xcodeproj */,
 				4943B838CC2F4EB180479593 /* RNAudioRecord.xcodeproj */,
+				03F7DB4D14AD42409E166C49 /* RNSound.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1212,12 +1217,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Debug;
@@ -1243,12 +1250,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Release;
@@ -1274,6 +1283,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Debug;
@@ -1298,6 +1308,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Release;
@@ -1331,12 +1342,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Debug;
@@ -1370,12 +1383,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Release;
@@ -1408,12 +1423,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Debug;
@@ -1446,12 +1463,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-audio-player-recorder/ios",
 					"$(SRCROOT)/../node_modules/react-native-audio-record/ios",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 				);
 			};
 			name = Release;
