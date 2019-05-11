@@ -1,42 +1,159 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, Platform} from 'react-native';
 import AudioRecord from 'react-native-audio-record';
 import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
+
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 
 import RoundButton from '../components/RoundButton.js';
 
 export default class RecordPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            audioFile: '',
-            recording: false,
-            loaded: false,
-            paused: true
-        }
+    state = {
+        currentTime: 0.0,
+        recording: false,
+        paused: false,
+        stoppedRecording: false,
+        finished: false,
+        audioPath: 'sdcard/sound.mp4',
+        hasPermission: undefined,
+      };
+  
+    prepareRecordingPath(audioPath){
+        AudioRecorder.prepareRecordingAtPath(audioPath, {
+          SampleRate: 22050,
+          Channels: 1,
+          AudioQuality: "Low",
+          AudioEncoding: "aac",
+          AudioEncodingBitRate: 32000
+        });
     }
 
-    async componentDidMount() {
-        await this.checkPermission();
-    
-        const options = {
-          sampleRate: 16000,
-          channels: 1,
-          bitsPerSample: 16,
-          wavFile: 'test.wav'
-        };
-    
-        AudioRecord.init(options);
-    
-        // AudioRecord.on('data', data => {
-        //   const chunk = Buffer.from(data, 'base64');
-        //   console.log('chunk size', chunk.byteLength);
-        //   // do something with audio chunk
-        // });
+    componentDidMount() {
+        AudioRecorder.requestAuthorization().then((isAuthorised) => {
+          this.setState({ hasPermission: isAuthorised });
+          if (!isAuthorised) return;
+  
+          this.prepareRecordingPath(this.state.audioPath);
+  
+          AudioRecorder.onProgress = (data) => {
+            this.setState({currentTime: Math.floor(data.currentTime)});
+          };
+  
+          AudioRecorder.onFinished = (data) => {
+            // Android callback comes in the form of a promise instead.
+            if (Platform.OS === 'ios') {
+              this._finishRecording(data.status === "OK", data.audioFileURL, data.audioFileSize);
+            }
+          };
+        });
+  }
+
+
+  async _pause() {
+    if (!this.state.recording) {
+      console.warn('Can\'t pause, not recording!');
+      return;
     }
+
+    try {
+      const filePath = await AudioRecorder.pauseRecording();
+      this.setState({paused: true});
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async _resume() {
+    if (!this.state.paused) {
+      console.warn('Can\'t resume, not paused!');
+      return;
+    }
+
+    try {
+      await AudioRecorder.resumeRecording();
+      this.setState({paused: false});
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async _stop() {
+    if (!this.state.recording) {
+      console.warn('Can\'t stop, not recording!');
+      return;
+    }
+
+    this.setState({stoppedRecording: true, recording: false, paused: false});
+
+    try {
+      const filePath = await AudioRecorder.stopRecording();
+
+      if (Platform.OS === 'android') {
+        this._finishRecording(true, filePath);
+      }
+      return filePath;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async _play() {
+    if (this.state.recording) {
+      await this._stop();
+    }
+
+    // These timeouts are a hacky workaround for some issues with react-native-sound.
+    // See https://github.com/zmxv/react-native-sound/issues/89.
+    setTimeout(() => {
+      var sound = new Sound(this.state.audioPath, '', (error) => {
+        if (error) {
+          console.warn('failed to load the sound', error);
+        }
+      });
+
+      setTimeout(() => {
+        sound.play((success) => {
+          if (success) {
+            console.log('successfully finished playing');
+          } else {
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      }, 100);
+    }, 100);
+  }
+
+  async _record() {
+    if (this.state.recording) {
+      console.warn('Already recording!');
+      return;
+    }
+
+    if (!this.state.hasPermission) {
+      console.warn('Can\'t record, no permission granted!');
+      return;
+    }
+
+    if(this.state.stoppedRecording){
+      this.prepareRecordingPath(this.state.audioPath);
+    }
+
+    this.setState({recording: true, paused: false});
+    try {
+      const filePath = await AudioRecorder.startRecording();
+      console.warn(filePath)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  _finishRecording(didSucceed, filePath, fileSize) {
+    this.setState({ finished: didSucceed });
+    console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath} and size of ${fileSize || 0} bytes`);
+}   
 
     checkPermission = async () => {
         const p = await Permissions.check('microphone');
@@ -111,15 +228,15 @@ export default class RecordPage extends Component {
                 <Text style={styles.titleStyle}>Record</Text>
                 <RoundButton
                     iconImage={require('../images/microphone.png')}
-                    onPress={() => {this.start()}}
+                    onPress={() => {this._record()}}
                     disabled={this.state.recording}>
                 </RoundButton>
                 <RoundButton
                     iconImage={require('../images/stop.png')}
-                    onPress={() => {this.stop()}}
+                    onPress={() => {this._stop()}}
                     disabled={!this.state.recording}>
                 </RoundButton>
-                <Button title={'Play'} onPress={this.play}></Button>
+                <Button title={'Play'} onPress={() => this._play()}></Button>
                 
             </ScrollView>
         );

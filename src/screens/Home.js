@@ -17,7 +17,7 @@ export default class Home extends Component {
                 <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                 <MyButton 
                     text={'Record Page'}
-                    onPress={() => this.props.navigation.navigate('RecordPage')}>
+                    onPress={() => this.props.navigation.navigate('Recorder')}>
                 </MyButton>
             </ScrollView>
         );

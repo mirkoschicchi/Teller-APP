@@ -3,6 +3,9 @@ package com.home;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.dooboolab.RNAudioRecorderPlayerPackage;
+import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.goodatlas.audiorecord.RNAudioRecordPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -26,9 +29,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
+            new RNAudioRecorderPlayerPackage(),
+            new ReactNativeAudioPackage(),
             new RNSoundPackage(),
             new RNAudioRecordPackage(),
-          new RNGestureHandlerPackage()
+            new RNGestureHandlerPackage()
       );
     }
 

@@ -6,13 +6,15 @@ import Home from './Home.js';
 import Login from './Login.js';
 import SignUp from './SignUp.js';
 import RecordPage from './RecordPage.js';
+import Recorder from './Recorder';
 
 const AppNavigator = createSwitchNavigator(
     {
       Home: Home,
       Login: Login,
       SignUp: SignUp,
-      RecordPage: RecordPage
+      RecordPage: RecordPage,
+      Recorder: Recorder
     },
     {
       initialRouteName: "Login"
