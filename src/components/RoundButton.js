@@ -7,6 +7,7 @@ export default class RoundButton extends Component {
     render() {
         return (
             <TouchableOpacity
+                disabled={this.props.isDisabled}
                 style={styles.roundContainer}
                 onPress={() => this.props.onPress()}>
                 <Image
@@ -31,7 +32,8 @@ const styles = StyleSheet.create({
         borderRadius: 60/2,
         backgroundColor: '#4f94a0',
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        margin:10
     },
     image: {
         width:45,

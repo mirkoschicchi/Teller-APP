@@ -15,7 +15,7 @@ import RoundButton from '../components/RoundButton.js';
 
 import DialogInput from 'react-native-dialog-input';
 
-//import AudioList from '../components/AudioList.js';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -52,6 +52,7 @@ export default class Recorder extends Component {
             currentDurationSec: 0,
             playTime: '00:00:00',
 			duration: '00:00:00',
+			recording: false,
 			audioList: [],
 			newAudioName: 'unknown.mp3',
 			isAlertShown: false
@@ -64,7 +65,7 @@ export default class Recorder extends Component {
     componentDidMount() {
 		RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
         .then((files) => {
-			console.warn(files)
+
 			this.setState({audioList: files});
         })
         .catch(error => {
@@ -121,7 +122,8 @@ export default class Recorder extends Component {
         this.audioRecorderPlayer.addRecordBackListener((e) => {
           this.setState({
             recordSecs: e.current_position,
-            recordTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+			recordTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+			recording: true
           });
           return;
         });
@@ -133,12 +135,11 @@ export default class Recorder extends Component {
         this.audioRecorderPlayer.removeRecordBackListener();
         this.setState({
 		  recordSecs: 0,
-		  
+		  recording: false
         });
 		console.warn(result);
 		RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
 		.then((files) => {
-			console.warn(files)
 			this.setState({audioList: files});
 		})
 		.catch(error => {
@@ -199,7 +200,6 @@ export default class Recorder extends Component {
 		.then(() => {
 			RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
 			.then((files) => {
-				console.warn(files)
 				this.setState({audioList: files});
 			})
 			.catch(error => {
@@ -213,19 +213,23 @@ export default class Recorder extends Component {
 
     render() {
         return(
-            <ScrollView style={styles.container} contentContainerStyle={{alignItems:'center'}}>
-                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
-                <Text style={styles.titleStyle}>Record</Text>
-                <RoundButton
-                    iconImage={require('../images/microphone.png')}
-                    onPress={() => this.setState({'isAlertShown': true})}
-                    disabled={this.state.recording}>
-                </RoundButton>
-                <RoundButton
-                    iconImage={require('../images/stop.png')}
-                    onPress={this.onStopRecord}
-                    disabled={!this.state.recording}>
-                </RoundButton>
+        <ScrollView style={styles.container} contentContainerStyle={{alignItems:'center'}}>
+            <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+            <Text style={styles.titleStyle}>Record</Text>
+				{!this.state.recording?
+					<RoundButton
+						iconImage={require('../images/microphone.png')}
+						onPress={() => this.setState({'isAlertShown': true})}
+						isDisabled={this.state.recording}>
+                	</RoundButton>:
+					<RoundButton
+						iconImage={require('../images/stop.png')}
+						onPress={this.onStopRecord}
+						isDisabled={!this.state.recording}>
+                	</RoundButton>
+				}
+                
+                
 				{this.state.isAlertShown?<DialogInput 
 					isDialogVisible={this.state.isDialogVisible}
 					title={"New audio name"}
@@ -236,16 +240,26 @@ export default class Recorder extends Component {
 						this.setState({'isAlertShown': false})
 						this.onStartRecord();
 					} }
-					closeDialog={ () => this.setState({'isAlertShown': false})}>
+					closeDialog={() => this.setState({'isAlertShown': false})}>
 				</DialogInput>:null}
-                <Button title={'Play'} onPress={this.onStartPlay}></Button>
+      
 				<FlatList
+          ListHeaderComponent={
+            () =>{
+              return (
+                <View style={{flexDirection: 'row', justifyContent:'center',alignContent:'center'}}>
+                  <Text style={styles.headerList}>{"Audio List"}</Text>
+                </View>
+              )
+            }
+          }
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
-							<Text>{item}</Text>
-							<Button title={'Play'} onPress={() => this.playSpecificAudio(item)}></Button>
-							<Button title={'Delete'} onPress={() => this.deleteAudio(item)}></Button>
+							<Text style={styles.audioTrack}>{item}</Text>
+							<Icon style={{flex:1}} name="play-circle" size={40} color="#ffc90e" onPress={() => this.playSpecificAudio(item)}/>
+              <Icon style={{flex:1}} name="delete" size={40} color="#ffc90e" onPress={() => this.deleteAudio(item)}/>
+              <Icon style={{flex:1}} name="cube-send" size={40} color="#ffc90e" />
 						</View>
 					}
 				></FlatList>
@@ -297,10 +311,20 @@ const styles = StyleSheet.create({
 		backgroundColor: 'yellow'
 	},
 	flatview: {
-		justifyContent: 'center',
-		padding: 10,
-		borderRadius: 2,
-		borderWidth: 2,
-		flexDirection: 'row'
-	},
+    justifyContent: 'space-around',
+    borderWidth: 2,
+    padding:5,
+    flexDirection: 'row',
+    width: '95%',
+    alignItems: 'center' 
+  },
+  audioTrack: {
+    fontSize: 20,
+    color: 'white',
+    flex:2
+  },
+  headerList: {
+    fontSize:25,
+    fontWeight: 'bold'
+  }
   });
