@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 60/2,
-        backgroundColor: '#4f94a0',
+        backgroundColor: '#8197ab',
         alignItems:'center',
         justifyContent:'center',
         margin:10
     },
     image: {
         width:45,
-        height:45
+        height:45,
     }
   });

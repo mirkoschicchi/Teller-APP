@@ -76,7 +76,8 @@ export default class Login extends Component {
                     />
                     <MyButton
                         text={"Login"}
-                        onPress={() => this.handleLogin()}
+                        
+                        onPress={() => this.props.navigation.navigate('Blue')}
                     />
                 </View>
             </ScrollView>
@@ -89,7 +90,6 @@ const styles = StyleSheet.create({
 		flex: 1,
         flexDirection: 'row',
         margin: 5,
-        borderWidth:3
     },
     titleStyle : {
         fontSize:40, 
@@ -99,15 +99,13 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     container: {
-        borderWidth:15,
-        backgroundColor:'#724a6f',
-        borderColor: '#000000',
+        backgroundColor:'#303c4a',
     },
     iconStyle: {
         position: 'absolute',
-        width: 80,
-        height: 80,
-        top: -5,
-        left: -10
+        width: 60,
+        height: 60,
+        top: 3,
+        left: 5
     }
   });

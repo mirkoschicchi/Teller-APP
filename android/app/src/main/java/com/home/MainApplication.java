@@ -3,6 +3,8 @@ package com.home;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.slider.ReactSliderPackage;
+import com.polidea.reactnativeble.BlePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.dooboolab.RNAudioRecorderPlayerPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactSliderPackage(),
+            new BlePackage(),
             new RNFetchBlobPackage(),
             new RNAudioRecorderPlayerPackage(),
             new ReactNativeAudioPackage(),

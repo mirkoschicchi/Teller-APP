@@ -44,7 +44,7 @@ export default class SignUp extends Component {
                 </View>
                 <View style={styles.inputContainer}>
                     <DatePicker
-                        style={{flex: 1, backgroundColor:'#ffc90e', borderWidth:3, margin: 5 }}
+                        style={{flex: 1, backgroundColor:'#8197ab', borderWidth:3, margin: 5 }}
                         androidMode='calendar'
                         date={this.state.date}
                         mode="date"
@@ -115,15 +115,13 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     container: {
-        borderWidth:15,
-        backgroundColor:'#724a6f',
-        borderColor: '#000000',
+        backgroundColor:'#303c4a',
     },
     iconStyle: {
         position: 'absolute',
-        width: 80,
-        height: 80,
-        top: -5,
-        left: -10
+        width: 60,
+        height: 60,
+        top: 3,
+        left: 5
     }
   });

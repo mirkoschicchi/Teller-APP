@@ -104,7 +104,7 @@ android {
 
     defaultConfig {
         applicationId "com.home"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 18
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -139,6 +139,8 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_slider')
+    implementation project(':react-native-ble-plx')
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-audio-recorder-player')
     implementation project(':react-native-audio')

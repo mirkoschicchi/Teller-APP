@@ -19,26 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
-onStartRecord = async () => {
-  const result = await this.audioRecorderPlayer.startRecorder();
-  this.audioRecorderPlayer.addRecordBackListener((e) => {
-    this.setState({
-      recordSecs: e.current_position,
-      recordTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
-    });
-    return;
-  });
-  console.log(result);
-}
-
-onStopRecord = async () => {
-  const result = await this.audioRecorderPlayer.stopRecorder();
-  this.audioRecorderPlayer.removeRecordBackListener();
-  this.setState({
-    recordSecs: 0,
-  });
-  console.log(result);
-}
+import MyButton from '../components/MyButton';
 
 export default class Recorder extends Component {
 
@@ -55,7 +36,8 @@ export default class Recorder extends Component {
 			recording: false,
 			audioList: [],
 			newAudioName: 'unknown.mp3',
-			isAlertShown: false
+            isAlertShown: false,
+            playing: false,
         };
 
         this.audioRecorderPlayer = new AudioRecorderPlayer();
@@ -137,13 +119,12 @@ export default class Recorder extends Component {
 		  recordSecs: 0,
 		  recording: false
         });
-		console.warn(result);
 		RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
 		.then((files) => {
 			this.setState({audioList: files});
 		})
 		.catch(error => {
-		console.warn(error)
+			console.warn(error)
 		})
     }
 
@@ -181,17 +162,30 @@ export default class Recorder extends Component {
 		  console.log(msg);
 		  this.audioRecorderPlayer.addPlayBackListener((e) => {
 			if (e.current_position === e.duration) {
-			  console.log('finished');
-			  this.audioRecorderPlayer.stopPlayer();
+				this.setState({
+					playing: false
+				  })
+			  	this.audioRecorderPlayer.stopPlayer();
+			  
+			} else {
+				this.setState({
+					currentPositionSec: e.current_position,
+					currentDurationSec: e.duration,
+					playTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+					duration: this.audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+					playing: true,
+				  });
 			}
-			this.setState({
-			  currentPositionSec: e.current_position,
-			  currentDurationSec: e.duration,
-			  playTime: this.audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
-			  duration: this.audioRecorderPlayer.mmssss(Math.floor(e.duration)),
-			});
+			
 			return;
 		  });
+	}
+
+	stopCurrentPlay() {
+		this.setState({
+			playing: false
+		});
+		this.audioRecorderPlayer.stopPlayer();
 	}
 
 	deleteAudio = (audio) => {
@@ -226,7 +220,7 @@ export default class Recorder extends Component {
 						iconImage={require('../images/stop.png')}
 						onPress={this.onStopRecord}
 						isDisabled={!this.state.recording}>
-                	</RoundButton>
+                    </RoundButton>
 				}
                 
                 
@@ -257,14 +251,17 @@ export default class Recorder extends Component {
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
 							<Text style={styles.audioTrack}>{item}</Text>
-							<Icon style={{flex:1}} name="play-circle" size={40} color="#ffc90e" onPress={() => this.playSpecificAudio(item)}/>
-              <Icon style={{flex:1}} name="delete" size={40} color="#ffc90e" onPress={() => this.deleteAudio(item)}/>
-              <Icon style={{flex:1}} name="cube-send" size={40} color="#ffc90e" />
+							{!this.state.playing?
+								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playSpecificAudio(item)}/>:
+								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
+							}
+							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
+							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" />
 						</View>
 					}
 				></FlatList>
             	
-                
+            <MyButton text={'Home'} onPress={() => this.props.navigation.navigate('Home')}/>   
             </ScrollView>
         );
     }
@@ -289,17 +286,15 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     container: {
-        borderWidth:15,
-        backgroundColor:'#724a6f',
-        borderColor: '#000000',
+        backgroundColor:'#303c4a'
     },
     iconStyle: {
         flex:1,
         position: 'absolute',
-        width: 80,
-        height: 80,
-        top: -5,
-        left: -10
+        width: 60,
+        height: 60,
+        top: 3,
+        left: 5
 	},
 	itemStyle: {
 		borderWidth: 3,
@@ -316,7 +311,8 @@ const styles = StyleSheet.create({
     padding:5,
     flexDirection: 'row',
     width: '95%',
-    alignItems: 'center' 
+    alignItems: 'center',
+    backgroundColor: '#8197ab' 
   },
   audioTrack: {
     fontSize: 20,
@@ -325,6 +321,7 @@ const styles = StyleSheet.create({
   },
   headerList: {
     fontSize:25,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#fde789'
   }
   });
