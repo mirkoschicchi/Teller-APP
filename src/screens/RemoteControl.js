@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, FlatList} from 'react-native';
 import Slider from '@react-native-community/slider';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MyButton from '../components/MyButton';
+import Speed from '../components/Speed';
 
 export default class RemoteControl extends Component {
     static navigationOptions = {
@@ -160,11 +161,40 @@ export default class RemoteControl extends Component {
                         }
                         thumbTintColor="#f2a06e"
                     />
+
+                    
                 </View>
+                <Speed/>      
+
+                <FlatList
+					ListHeaderComponent={
+						() =>{
+						return (
+							<View style={{flexDirection: 'row', justifyContent:'center',alignContent:'center'}}>
+							<Text style={styles.headerList}>{"Audio List"}</Text>
+							</View>
+						)
+						}
+					}
+					data={this.state.audioList}
+					renderItem={({item}) =>
+						<View style={styles.flatview}>
+							<Text style={styles.audioTrack}>{item}</Text>
+							{!this.state.playing?
+								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playSpecificAudio(item)}/>:
+								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
+							}
+							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
+							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" />
+						</View>
+					}
+				></FlatList>
+
+
 
                 <MyButton
                     text={'Home'}
-                    onPress={() => {this.props.navigation.navigate('Home')}}
+                    onPress={() => {this.props.navigation.navigate('Home')}}j
                 />
                 
                 
