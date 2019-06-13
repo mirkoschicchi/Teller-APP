@@ -40,6 +40,8 @@ export default class Recorder extends Component {
             playing: false,
         };
 
+        this.onPress = this.onPress.bind(this)
+
         this.audioRecorderPlayer = new AudioRecorderPlayer();
         this.audioRecorderPlayer.setSubscriptionDuration(0.09); // optional. Default is 0.1
     }
