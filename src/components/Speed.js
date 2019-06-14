@@ -7,29 +7,32 @@ export default class Speed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            speed:1
+            speed:this.props.speed
         }
     }
 
     increase() {
-        this.setState({
-            speed: this.state.speed + 1
-        })
+        if(this.state.speed < 400) {
+            this.setState({
+                speed: this.state.speed + 10
+            })
+        }       
     }
 
     decrease() {
-        this.setState({
-            speed: this.state.speed - 1
-        })
+        if(this.state.speed > 10) {
+            this.setState({
+                speed: this.state.speed - 10
+            })}
     }
 
     render() {
-        const {onPress} = this.props;
+        const {onChange} = this.props;
         return(
             <View style={styles.container}>
-                <Icon style={styles.icons} name="turtle" size={30} color="#f2a06e" onPress={() => this.decrease()}/>
-                <Text>{this.state.speed}%</Text>
-                <Icon style={styles.icons} name="rabbit" size={30} color="#f2a06e" onPress={() => this.increase()}/>
+                <Icon style={styles.icons} name="turtle" size={40} color="#f2a06e" onPress={() => this.decrease()}/>
+                <Text style={styles.text} onChangeText={onChange(this.state.speed)}>{this.state.speed}%</Text>
+                <Icon style={styles.icons} name="rabbit" size={40} color="#f2a06e" onPress={() => this.increase()}/>
             </View>
         )
     }
@@ -46,12 +49,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: 3,
         borderRadius:20,
+        alignItems: 'center'
     },
     icons: {
         flex: 1,
         padding:10
     },
     text: {
-
+        fontSize: 30,
+        fontWeight: 'bold'
     }
   });

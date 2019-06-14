@@ -7,6 +7,7 @@ import MyButton from '../components/MyButton';
 import Speed from '../components/Speed';
 
 export default class RemoteControl extends Component {
+
     static navigationOptions = {
         title: 'Remote Control',
       };
@@ -16,7 +17,8 @@ export default class RemoteControl extends Component {
             playing: 0,
             paused: 0,
             volume: 100,
-            speed: 100
+            speed: 100,
+            host: "http://192.168.28.88:5000/"
         };
         this.playRandom = this.playRandom.bind(this);
         this.pause = this.pause.bind(this);
@@ -26,7 +28,7 @@ export default class RemoteControl extends Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.31.117:5000/controls/status', {
+        fetch(this.state.host+'controls/status', {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -42,7 +44,7 @@ export default class RemoteControl extends Component {
     }
     
     playMedia(mediaId) {
-        fetch('http://192.168.31.117:5000/controls/play/' + mediaId, {
+        fetch(this.state.host+'controls/play/' + mediaId, {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -55,7 +57,7 @@ export default class RemoteControl extends Component {
         this.setState({
             playing: true
         })
-        fetch('http://192.168.31.117:5000/controls/play', {
+        fetch(this.state.host+'controls/play', {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -69,7 +71,7 @@ export default class RemoteControl extends Component {
         this.setState({
             playing: false
         })
-        fetch('http://192.168.31.117:5000/controls/stop', {
+        fetch(this.state.host+'controls/stop', {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -79,7 +81,7 @@ export default class RemoteControl extends Component {
     }
 
     changeVolume(val) {
-        fetch('http://192.168.31.117:5000/controls/volume/' + val, {
+        fetch(this.state.host+'controls/volume/' + val, {
             method: 'POST',
         })
         .then((response) => response.json())
@@ -92,7 +94,7 @@ export default class RemoteControl extends Component {
         this.setState({
             playing: false
         })
-        fetch('http://192.168.31.117:5000/controls/pause', {
+        fetch(this.state.host+'controls/pause', {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -105,7 +107,7 @@ export default class RemoteControl extends Component {
         this.setState({
             playing: true
         })
-        fetch('http://192.168.31.117:5000/controls/resume', {
+        fetch(this.state.host+'controls/resume', {
             method: 'GET',
         })
         .then((response) => response.json())
@@ -116,13 +118,14 @@ export default class RemoteControl extends Component {
 
 
     playOrResume() {
-        fetch('http://192.168.31.117:5000/controls/status', {
+        fetch(this.state.host+'controls/status', {
             method: 'GET',
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            var isPlaying = this.state.playing;
-            var isPaused = this.state.paused;
+            var isPlaying = responseJson.is_playing;
+            var isPaused = responseJson.is_paused;
+            console.warn("play: " + isPlaying + " pause: " + isPaused)
             if(isPlaying == 0 && isPaused == 0) {
                 this.playRandom();
             } else if(isPlaying == 0 && isPaused == 1) {
@@ -130,6 +133,16 @@ export default class RemoteControl extends Component {
             }
         })
         .catch((error) => console.warn(error));
+    }
+
+    changeSpeed(val) {
+        fetch(this.state.host+'controls/speed/' + val, {
+            method: 'POST',
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.warn(responseJson);       
+        });
     }
 
     render() {
@@ -164,7 +177,11 @@ export default class RemoteControl extends Component {
 
                     
                 </View>
-                <Speed/>      
+                <Speed 
+                    speed={this.state.speed}
+                    onPress={() => console.warn(this.state.speed)}
+                    onChange={(val) => this.changeSpeed(val)}
+                />      
 
                 <FlatList
 					ListHeaderComponent={

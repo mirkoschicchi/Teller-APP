@@ -1,4 +1,5 @@
 #!/bin/bash
+adb reverse tcp:8081 tcp:8081 
 
 echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances
 echo 32768 | sudo tee -a /proc/sys/fs/inotify/max_queued_events

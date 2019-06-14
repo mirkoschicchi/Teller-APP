@@ -37,10 +37,11 @@ export default class Recorder extends Component {
 			audioList: [],
 			newAudioName: 'unknown.mp3',
             isAlertShown: false,
-            playing: false,
+			playing: false,
+			host: "http://192.168.28.88:5000/"
         };
 
-        this.onPress = this.onPress.bind(this)
+        //this.onPress = this.onPress.bind(this)
 
         this.audioRecorderPlayer = new AudioRecorderPlayer();
         this.audioRecorderPlayer.setSubscriptionDuration(0.09); // optional. Default is 0.1
@@ -207,6 +208,37 @@ export default class Recorder extends Component {
 		})
 	}
 
+	sendToDevice = async (id, media, name) => {
+		let path_to_a_file = 'file://' + '/storage/emulated/0/Teller/' + media;
+
+		let formData = new FormData();
+		formData.append('media', {
+			uri: path_to_a_file,
+			name:  name,
+			type: 'audio/mp3',
+		});
+		
+		formData.append('name', name);  
+		fetch(this.state.host+'media/' + id, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+			body: formData
+		})
+		.then((response) => {
+			return response.json(); 
+		})	
+		.then((responseJson) => {
+			console.warn(responseJson)
+		})
+		.catch((error) => {
+			console.warn("Error: " + error)
+		})
+		 
+	}
+
     render() {
         return(
         <ScrollView style={styles.container} contentContainerStyle={{alignItems:'center'}}>
@@ -240,15 +272,15 @@ export default class Recorder extends Component {
 				</DialogInput>:null}
       
 				<FlatList
-          ListHeaderComponent={
-            () =>{
-              return (
-                <View style={{flexDirection: 'row', justifyContent:'center',alignContent:'center'}}>
-                  <Text style={styles.headerList}>{"Audio List"}</Text>
-                </View>
-              )
-            }
-          }
+					ListHeaderComponent={
+						() =>{
+						return (
+							<View style={{flexDirection: 'row', justifyContent:'center',alignContent:'center'}}>
+							<Text style={styles.headerList}>{"Audio List"}</Text>
+							</View>
+						)
+						}
+					}
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
@@ -258,7 +290,7 @@ export default class Recorder extends Component {
 								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
 							}
 							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
-							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" />
+							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" onPress= {() => this.sendToDevice(111, item, item)} />
 						</View>
 					}
 				></FlatList>
