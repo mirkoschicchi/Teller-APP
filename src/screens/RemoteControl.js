@@ -14,11 +14,9 @@ export default class RemoteControl extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playing: 0,
-            paused: 0,
-            volume: 100,
             speed: 100,
-            host: "http://192.168.28.88:5000/"
+            host: "http://192.168.28.88:5000/",
+            audioList: []
         };
         this.playRandom = this.playRandom.bind(this);
         this.pause = this.pause.bind(this);
@@ -41,6 +39,17 @@ export default class RemoteControl extends Component {
             })
         })
         .catch((error) => console.warn(error));
+
+        fetch(this.state.host+'media/', {
+            method: 'GET',
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                audioList: responseJson
+            })
+        })
+        .catch((error) => console.warn(error));
     }
     
     playMedia(mediaId) {
@@ -48,35 +57,38 @@ export default class RemoteControl extends Component {
             method: 'GET',
         })
         .then((response) => response.json())
-        .then((responseJson) => {
-            console.warn(responseJson);       
+        .then((responseJson) => {  
+            this.setState({
+                playing: 1,
+                paused: 0
+            })
         });
     }
 
     playRandom () {
-        this.setState({
-            playing: true
-        })
         fetch(this.state.host+'controls/play', {
             method: 'GET',
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson);       
+            this.setState({
+                playing: 1,
+                paused: 0
+            })     
         });
         
     }
 
     stop() {
-        this.setState({
-            playing: false
-        })
         fetch(this.state.host+'controls/stop', {
             method: 'GET',
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson);       
+            this.setState({
+                playing: 0,
+                paused: 0
+            })       
         });
     }
 
@@ -85,39 +97,38 @@ export default class RemoteControl extends Component {
             method: 'POST',
         })
         .then((response) => response.json())
-        .then((responseJson) => {
-            console.warn(responseJson);       
+        .then((responseJson) => {      
         });
     }
 
     pause() {
-        this.setState({
-            playing: false
-        })
         fetch(this.state.host+'controls/pause', {
             method: 'GET',
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson);       
+            console.warn("Paused")
+            this.setState({
+                playing: 0,
+                paused: 1
+            })      
         });
     }
 
-    resume () {
-        this.setState({
-            playing: true
-        })
+    resume() {
         fetch(this.state.host+'controls/resume', {
             method: 'GET',
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson);       
+            this.setState({
+                playing: 1,
+            })       
         });
     }
 
 
-    playOrResume() {
+    playOrResume(mediaId) {
         fetch(this.state.host+'controls/status', {
             method: 'GET',
         })
@@ -126,8 +137,12 @@ export default class RemoteControl extends Component {
             var isPlaying = responseJson.is_playing;
             var isPaused = responseJson.is_paused;
             console.warn("play: " + isPlaying + " pause: " + isPaused)
-            if(isPlaying == 0 && isPaused == 0) {
-                this.playRandom();
+            if(isPlaying == 0 && isPaused == 0) {  
+                if(mediaId == -1) {
+                    this.playRandom();
+                } else {
+                    this.playMedia(mediaId)
+                }
             } else if(isPlaying == 0 && isPaused == 1) {
                 this.resume();
             }
@@ -145,6 +160,23 @@ export default class RemoteControl extends Component {
         });
     }
 
+    delete = (mediaId) => {
+        fetch(this.state.host+'media/' + mediaId, {
+            method: 'DELETE',
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            fetch(this.state.host+'media/', {
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                audioList = responseJson;
+            })
+            .catch((error) => console.warn(error));   
+        });
+    } 
+
     render() {
         return(
             <ScrollView style={styles.container}>
@@ -153,11 +185,11 @@ export default class RemoteControl extends Component {
                 
 				<View style={{flexDirection: 'row', alignItems:"center"}}>
                     {this.state.playing == 0?
-                        <Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={this.playOrResume}/>:
-                        <Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={this.pause}/>
+                        <Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(-1)}/>:
+                        <Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={() => this.pause()}/>
                     }
                     
-                    <Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={this.stop}/>
+                    <Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stop()}/>
                 </View>
                 <View style={{flexDirection: 'row', alignItems:"center"}}>
                     <Icon style={{flex:1}} name="volume-high" size={40} color="#f2a06e"/>
@@ -196,13 +228,12 @@ export default class RemoteControl extends Component {
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
-							<Text style={styles.audioTrack}>{item}</Text>
-							{!this.state.playing?
-								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playSpecificAudio(item)}/>:
-								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
+							<Text style={styles.audioTrack}>{item.name}</Text>
+							{this.state.playing == 0?
+								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(item.id)}/>:
+								<Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={() => this.pause()}/>
 							}
-							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
-							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" />
+							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.delete(item.id)}/>
 						</View>
 					}
 				></FlatList>
@@ -244,5 +275,14 @@ const styles = StyleSheet.create({
         height: 60,
         top: 3,
         left: 5
-    }
+    },
+    flatview: {
+        justifyContent: 'space-around',
+        borderWidth: 2,
+        padding:5,
+        flexDirection: 'row',
+        width: '95%',
+        alignItems: 'center',
+        backgroundColor: '#8197ab' 
+      },
   });

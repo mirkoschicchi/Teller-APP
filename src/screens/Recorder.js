@@ -290,7 +290,7 @@ export default class Recorder extends Component {
 								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
 							}
 							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
-							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" onPress= {() => this.sendToDevice(111, item, item)} />
+							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" onPress= {() => this.sendToDevice(Math.floor(Math.random() * 100), item, item)} />
 						</View>
 					}
 				></FlatList>
