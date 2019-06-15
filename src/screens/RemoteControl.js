@@ -5,6 +5,7 @@ import Slider from '@react-native-community/slider';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MyButton from '../components/MyButton';
 import Speed from '../components/Speed';
+import ListItem from '../components/ListItem';
 
 export default class RemoteControl extends Component {
 
@@ -15,7 +16,7 @@ export default class RemoteControl extends Component {
         super(props);
         this.state = {
             speed: 100,
-            host: "http://192.168.28.88:5000/",
+            host: "http://192.168.1.90:5000/",
             audioList: []
         };
         this.playRandom = this.playRandom.bind(this);
@@ -107,7 +108,6 @@ export default class RemoteControl extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn("Paused")
             this.setState({
                 playing: 0,
                 paused: 1
@@ -136,7 +136,6 @@ export default class RemoteControl extends Component {
         .then((responseJson) => {
             var isPlaying = responseJson.is_playing;
             var isPaused = responseJson.is_paused;
-            console.warn("play: " + isPlaying + " pause: " + isPaused)
             if(isPlaying == 0 && isPaused == 0) {  
                 if(mediaId == -1) {
                     this.playRandom();
@@ -155,12 +154,12 @@ export default class RemoteControl extends Component {
             method: 'POST',
         })
         .then((response) => response.json())
-        .then((responseJson) => {
-            console.warn(responseJson);       
+        .then((responseJson) => {  
         });
     }
 
     delete = (mediaId) => {
+        console.warn("Delete")
         fetch(this.state.host+'media/' + mediaId, {
             method: 'DELETE',
         })
@@ -227,14 +226,11 @@ export default class RemoteControl extends Component {
 					}
 					data={this.state.audioList}
 					renderItem={({item}) =>
-						<View style={styles.flatview}>
-							<Text style={styles.audioTrack}>{item.name}</Text>
-							{this.state.playing == 0?
-								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(item.id)}/>:
-								<Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={() => this.pause()}/>
-							}
-							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.delete(item.id)}/>
-						</View>
+						<ListItem
+                            item={item}
+                            deleteMedia={() => this.delete(item.id)}
+                            clicked={true}
+                        />
 					}
 				></FlatList>
 
@@ -284,5 +280,10 @@ const styles = StyleSheet.create({
         width: '95%',
         alignItems: 'center',
         backgroundColor: '#8197ab' 
+      },
+      audioTrack: {
+        fontSize: 20,
+        color: 'white',
+        flex:2
       },
   });
