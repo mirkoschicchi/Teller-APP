@@ -6,17 +6,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default class ListItem extends Component {
 
     constructor(props) {
-        super(props);
-        this.state = {
-            clicked: false
-        };
+		super(props);
     }
 
 	render() {
 		return (
             <TouchableOpacity 
-                style={this.state.clicked? styles.containerPressed : styles.container}
-                onPress={() => this.setState({clicked: !this.state.clicked})}>              
+                style={this.props.option ? styles.containerPressed : styles.container}   
+				onPress={() => this.props.onPress()}
+			>
                 <Text style={styles.audioTrack}>{this.props.item.name}</Text>
                 <Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.props.deleteMedia(this.props.item.id)}/>
             </TouchableOpacity>	

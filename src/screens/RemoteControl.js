@@ -17,7 +17,8 @@ export default class RemoteControl extends Component {
         this.state = {
             speed: 100,
             host: "http://192.168.1.90:5000/",
-            audioList: []
+            audioList: [],
+            selected: -1
         };
         this.playRandom = this.playRandom.bind(this);
         this.pause = this.pause.bind(this);
@@ -184,7 +185,7 @@ export default class RemoteControl extends Component {
                 
 				<View style={{flexDirection: 'row', alignItems:"center"}}>
                     {this.state.playing == 0?
-                        <Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(-1)}/>:
+                        <Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(this.state.selected)}/>:
                         <Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={() => this.pause()}/>
                     }
                     
@@ -229,7 +230,8 @@ export default class RemoteControl extends Component {
 						<ListItem
                             item={item}
                             deleteMedia={() => this.delete(item.id)}
-                            clicked={true}
+                            onPress={() => this.setState({selected: item.id})}
+                            option={this.state.selected == item.id ? true : false}
                         />
 					}
 				></FlatList>
