@@ -7,6 +7,7 @@ import MyButton from '../components/MyButton';
 import Speed from '../components/Speed';
 import ListItem from '../components/ListItem';
 
+
 export default class RemoteControl extends Component {
 
     static navigationOptions = {
@@ -16,9 +17,10 @@ export default class RemoteControl extends Component {
         super(props);
         this.state = {
             speed: 100,
-            host: "http://192.168.1.90:5000/",
+            host: 'http://192.168.1.90:5000/',
             audioList: [],
-            selected: -1
+            selected: -1,
+            loading: false
         };
         this.playRandom = this.playRandom.bind(this);
         this.pause = this.pause.bind(this);
@@ -171,7 +173,10 @@ export default class RemoteControl extends Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                audioList = responseJson;
+                this.setState({
+                    audioList: responseJson,
+                    loading: true
+                })
             })
             .catch((error) => console.warn(error));   
         });
@@ -230,10 +235,11 @@ export default class RemoteControl extends Component {
 						<ListItem
                             item={item}
                             deleteMedia={() => this.delete(item.id)}
-                            onPress={() => this.setState({selected: item.id})}
+                            onPress={() => this.state.selected == item.id ? this.setState({selected: -1 }) : this.setState({selected: item.id})}
                             option={this.state.selected == item.id ? true : false}
                         />
 					}
+                    keyExtractor={(item, index) => index.toString()}
 				></FlatList>
 
 
@@ -288,4 +294,9 @@ const styles = StyleSheet.create({
         color: 'white',
         flex:2
       },
+      headerList: {
+        fontSize:25,
+        fontWeight: 'bold',
+        color: '#fde789'
+      }
   });

@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from 'react-native-google-signin';
+
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
 
@@ -24,24 +30,61 @@ export default class Login extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {username: '', password: ''};
+        this.state = {email: '', password: ''};
     }
 
+    componentDidMount() {
+        GoogleSignin.configure({
+            //It is mandatory to call this method before attempting to call signIn()
+            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+            // Repleace with your webClientId generated from Firebase console
+            webClientId:
+              '36699314176-o4be1skj1rn48ve97uerbomaed1d7meo.apps.googleusercontent.com',
+        });
+    }
+
+    googleSignin = async() => {
+        //Prompts a modal to let the user sign in into your application.
+        try {
+            await GoogleSignin.hasPlayServices({
+            //Check if device has Google Play Services installed.
+            //Always resolves to true on iOS.
+            showPlayServicesUpdateDialog: true,
+             });
+            const userInfo = await GoogleSignin.signIn();
+            console.warn('User Info --> ', userInfo);
+            this.setState({ userInfo: userInfo });
+        } catch (error) {
+            console.log('Message', error.message);
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            console.log('User Cancelled the Login Flow');
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+            console.log('Signing In');
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            console.log('Play Services Not Available or Outdated');
+            } else {
+            console.log('Some Other Error Happened');
+            }
+        }
+    }
+
+
     handleLogin() {
-        fetch('http://192.168.1.126:9000/login', {
+        fetch('https://teller-app-project.herokuapp.com/users/signin', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            username: this.state.username,
+            email: this.state.email.trim(),
             password: this.state.password,
         }),
         })
         .then((responseStatus) => {
-            console.warn(responseStatus)
             if(responseStatus.status == 200) {
+                this.props.navigation.navigate('Home');
+            } else {
                 this.props.navigation.navigate('Home');
             }
         })
@@ -58,8 +101,8 @@ export default class Login extends Component {
                 <UserInput
                     source={usernameImg}
                     style={{margin:5}}
-                    placeholder={"Username"}
-                    onChangeText={(username) => this.setState({username: username})}
+                    placeholder={"Email"}
+                    onChangeText={(email) => this.setState({email: email})}
                     value={this.state.username}>
                 </UserInput>
                 <UserInput
@@ -75,9 +118,17 @@ export default class Login extends Component {
                         onPress={() => this.props.navigation.navigate('SignUp')}
                     />
                     <MyButton
-                        text={"Login"}
-                        
-                        onPress={() => this.props.navigation.navigate('Blue')}
+                        text={"Login"}                   
+                        onPress={() => this.handleLogin()}
+                    />
+                </View>
+
+                <View style={styles.container}>
+                    <GoogleSigninButton
+                    style={{ width: 312, height: 48 }}
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Light}
+                    onPress={this.googleSignin}
                     />
                 </View>
             </ScrollView>

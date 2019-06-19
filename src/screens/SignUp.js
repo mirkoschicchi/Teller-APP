@@ -27,6 +27,30 @@ export default class SignUp extends Component {
         this.state = {username: '', password: '', email: '', phone_number: '', date:"01-01-2019"}
     }
 
+    signUp() {
+        fetch('https://teller-app-project.herokuapp.com/users/signup', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+            }),
+            })
+            .then((responseStatus) => {
+                console.warn(responseStatus)
+                if(responseStatus.status == 200) {
+                    this.props.navigation.navigate('Home');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                this.props.navigation.navigate('SignUp');
+            });
+    }
+
     render() {
         return(
             <ScrollView style={styles.container}>
@@ -73,7 +97,8 @@ export default class SignUp extends Component {
                 </View>       
                 <UserInput
                     source={emailImg}
-                    placeholder={"Email"}>
+                    placeholder={"Email"}
+                    onChangeText={(email) => this.setState({ email: email })}>
                 </UserInput>
                 <UserInput
                     source={usernameImg}
@@ -82,7 +107,8 @@ export default class SignUp extends Component {
                 <UserInput
                     source={passwordImg}
                     placeholder={"Password"}
-                    secureTextEntry={true}>
+                    secureTextEntry={true}
+                    onChangeText={(password) => this.setState({ password: password })}>
                 </UserInput>
                 <View style={styles.inputContainer}>
                     <MyButton
@@ -91,7 +117,7 @@ export default class SignUp extends Component {
                     />
                     <MyButton
                         text={"Sign-Up"}
-                        onPress={() => this.props.navigation.navigate('Home')}
+                        onPress={() => this.signUp()}
                     />
                 </View>                 
             </ScrollView>

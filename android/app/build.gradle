@@ -139,6 +139,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-uuid-generator')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-google-signin')
     implementation project(':@react-native-community_slider')
     implementation project(':react-native-ble-plx')
     implementation project(':rn-fetch-blob')

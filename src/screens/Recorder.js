@@ -21,6 +21,9 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 
 import MyButton from '../components/MyButton';
 
+import {uuidv4} from '../utilities/Uuid';
+
+
 export default class Recorder extends Component {
 
     constructor(props) {
@@ -38,7 +41,7 @@ export default class Recorder extends Component {
 			newAudioName: 'unknown.mp3',
             isAlertShown: false,
 			playing: false,
-			host: "http://192.168.1.90:5000/"
+			host: 'http://192.168.1.90:5000/'
         };
 
         //this.onPress = this.onPress.bind(this)
@@ -56,7 +59,11 @@ export default class Recorder extends Component {
         .catch(error => {
           console.warn(error)
         })
-    }
+	}
+
+	componentWillUnmount() {
+		this.stopCurrentPlay();
+	}
 
     onStartRecord = async () => {
         if (Platform.OS === 'android') {
@@ -98,10 +105,13 @@ export default class Recorder extends Component {
             console.warn(err);
             return;
           }
-        }
+		}
+		
+		// Generate uuid
+		id = uuidv4();
+
         const path = Platform.select({
-          ios: 'hello.m4a',
-          android: '/storage/emulated/0/Teller/' + this.state.newAudioName,
+          android: '/storage/emulated/0/Teller/' + id + '_' + this.state.newAudioName,
         });
         const uri = await this.audioRecorderPlayer.startRecorder(path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {
@@ -157,7 +167,6 @@ export default class Recorder extends Component {
 
     playSpecificAudio = async (audio) => {
 		const path = Platform.select({
-			ios: 'hello.m4a',
 			android: '/storage/emulated/0/Teller/' + audio,
 		  });
 		  const msg = await this.audioRecorderPlayer.startPlayer(path);
@@ -208,8 +217,10 @@ export default class Recorder extends Component {
 		})
 	}
 
-	sendToDevice = async (id, media, name) => {
-		let path_to_a_file = 'file://' + '/storage/emulated/0/Teller/' + media;
+	sendToDevice = async (item) => {
+		let id = item.split('_')[0].trim();
+		let name = item.split('_')[1].trim();
+		let path_to_a_file = 'file://' + '/storage/emulated/0/Teller/' + item;
 
 		let formData = new FormData();
 		formData.append('media', {
@@ -284,15 +295,16 @@ export default class Recorder extends Component {
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
-							<Text style={styles.audioTrack}>{item}</Text>
+							<Text style={styles.audioTrack}>{item.split('_')[1]}</Text>
 							{!this.state.playing?
 								<Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playSpecificAudio(item)}/>:
 								<Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stopCurrentPlay()}/>
 							}
 							<Icon style={{flex:1}} name="delete" size={40} color="#f2a06e" onPress={() => this.deleteAudio(item)}/>
-							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" onPress= {() => this.sendToDevice(Math.floor(Math.random() * 100), item, item)} />
+							<Icon style={{flex:1}} name="cube-send" size={40} color="#f2a06e" onPress= {() => this.sendToDevice(item)} />
 						</View>
 					}
+					keyExtractor={(item, index) => index.toString()}
 				></FlatList>
             	
             <MyButton text={'Home'} onPress={() => this.props.navigation.navigate('Home')}/>   

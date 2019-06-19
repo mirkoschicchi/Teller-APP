@@ -14,6 +14,7 @@ export default class Home extends Component {
     render() {
         return(
             <ScrollView style={styles.container}>
+                <Text style={styles.titleStyle}>Home</Text>
                 <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                 <MyButton 
                     text={'Record Page'}
@@ -22,6 +23,10 @@ export default class Home extends Component {
                 <MyButton 
                     text={'Remote Control'}
                     onPress={() => this.props.navigation.navigate('RemoteControl')}>
+                </MyButton>
+                <MyButton 
+                    text={'Log out'}
+                    onPress={() => this.props.navigation.navigate('Login')}>
                 </MyButton>
                 
             </ScrollView>
@@ -52,5 +57,6 @@ const styles = StyleSheet.create({
         height: 60,
         top: 3,
         left: 5
-    }
+    },
+    
   });

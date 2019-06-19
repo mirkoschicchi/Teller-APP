@@ -3,6 +3,9 @@ package com.home;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.github.traviskn.rnuuidgenerator.RNUUIDGeneratorPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -31,6 +34,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNUUIDGeneratorPackage(),
+            new VectorIconsPackage(),
+            new RNGoogleSigninPackage(),
             new ReactSliderPackage(),
             new BlePackage(),
             new RNFetchBlobPackage(),
