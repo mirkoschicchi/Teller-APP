@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "257280061604",
+    "firebase_url": "https://teller-17c45.firebaseio.com",
+    "project_id": "teller-17c45",
+    "storage_bucket": "teller-17c45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257280061604:android:af8b7c79f650c45a",
+        "android_client_info": {
+          "package_name": "Teller.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257280061604-9n7lss5o2ek6a19cs1t240j4u0jbtecj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxxyOIQ39vuDDwpEBzNLHf3Joh2YI63QA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257280061604-9n7lss5o2ek6a19cs1t240j4u0jbtecj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

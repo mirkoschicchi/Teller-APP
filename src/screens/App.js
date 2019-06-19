@@ -6,7 +6,6 @@ import Home from './Home.js';
 import Login from './Login.js';
 import SignUp from './SignUp.js';
 import Recorder from './Recorder';
-import Blue from './Blue.js';
 import RemoteControl from './RemoteControl';
 
 const AppNavigator = createSwitchNavigator(
@@ -15,7 +14,6 @@ const AppNavigator = createSwitchNavigator(
       Login: Login,
       SignUp: SignUp,
       Recorder: Recorder,
-      Blue: Blue,
       RemoteControl: RemoteControl
     },
     {

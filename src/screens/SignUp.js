@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
 import emailImg from '../images/email.png';
@@ -109,6 +111,11 @@ export default class SignUp extends Component {
                     placeholder={"Password"}
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password: password })}>
+                </UserInput>
+                <UserInput
+                    source={passwordImg}
+                    placeholder={"Teller code"}
+                    onChangeText={(tellerCode) => this.setState({ tellerCode: tellerCode })}>
                 </UserInput>
                 <View style={styles.inputContainer}>
                     <MyButton

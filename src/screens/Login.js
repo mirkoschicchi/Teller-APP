@@ -33,14 +33,26 @@ export default class Login extends Component {
         this.state = {email: '', password: ''};
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         GoogleSignin.configure({
-            //It is mandatory to call this method before attempting to call signIn()
-            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-            // Repleace with your webClientId generated from Firebase console
-            webClientId:
-              '36699314176-o4be1skj1rn48ve97uerbomaed1d7meo.apps.googleusercontent.com',
+            webClientId: '36699314176-o4be1skj1rn48ve97uerbomaed1d7meo.apps.googleusercontent.com',
+            offlineAccess: false
         });
+
+        await this._getCurrentUser();
+    }
+
+    async _getCurrentUser() {
+        try {
+          const userInfo = await GoogleSignin.signInSilently();
+          this.setState({ userInfo, error: null });
+        } catch (error) {
+          const errorMessage =
+            error.code === statusCodes.SIGN_IN_REQUIRED ? 'Please sign in :)' : error.message;
+          this.setState({
+            error: new Error(errorMessage),
+          });
+        }
     }
 
     googleSignin = async() => {
@@ -55,19 +67,18 @@ export default class Login extends Component {
             console.warn('User Info --> ', userInfo);
             this.setState({ userInfo: userInfo });
         } catch (error) {
-            console.log('Message', error.message);
+            console.warn('Message', error.message);
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            console.log('User Cancelled the Login Flow');
+            console.warn('User Cancelled the Login Flow');
             } else if (error.code === statusCodes.IN_PROGRESS) {
-            console.log('Signing In');
+            console.warn('Signing In');
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            console.log('Play Services Not Available or Outdated');
+            console.warn('Play Services Not Available or Outdated');
             } else {
-            console.log('Some Other Error Happened');
+            console.warn('Some Other Error Happened');
             }
         }
     }
-
 
     handleLogin() {
         fetch('https://teller-app-project.herokuapp.com/users/signin', {
@@ -124,12 +135,12 @@ export default class Login extends Component {
                 </View>
 
                 <View style={styles.container}>
-                    <GoogleSigninButton
-                    style={{ width: 312, height: 48 }}
+                <GoogleSigninButton
+                    style={{ width: 192, height: 48 }}
                     size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Light}
+                    color={GoogleSigninButton.Color.Dark}
                     onPress={this.googleSignin}
-                    />
+                    disabled={this.state.isSigninInProgress} />
                 </View>
             </ScrollView>
             )
