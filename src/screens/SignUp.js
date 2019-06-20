@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
 import emailImg from '../images/email.png';
+import teddyImg from '../images/teddy.png';
 
 import UserInput from '../components/UserInput';
 import MyButton from '../components/MyButton';
@@ -26,7 +27,7 @@ import {
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
-        this.state = {username: '', password: '', email: '', phone_number: '', date:"01-01-2019"}
+        this.state = {username: '', password: '', email: '', code: '', phone_number: '', date:"01-01-2019"}
     }
 
     signUp() {
@@ -39,6 +40,7 @@ export default class SignUp extends Component {
             body: JSON.stringify({
                 email: this.state.email,
                 password: this.state.password,
+                code: this.state.code
             }),
             })
             .then((responseStatus) => {
@@ -113,9 +115,9 @@ export default class SignUp extends Component {
                     onChangeText={(password) => this.setState({ password: password })}>
                 </UserInput>
                 <UserInput
-                    source={passwordImg}
+                    source={teddyImg}
                     placeholder={"Teller code"}
-                    onChangeText={(tellerCode) => this.setState({ tellerCode: tellerCode })}>
+                    onChangeText={(code) => this.setState({ code: code })}>
                 </UserInput>
                 <View style={styles.inputContainer}>
                     <MyButton

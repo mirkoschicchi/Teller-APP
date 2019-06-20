@@ -7,8 +7,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.dooboolab.RNAudioRecorderPlayerPackage;
 import android.Manifest;
 import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 public class MainActivity extends ReactActivity {
 
