@@ -41,7 +41,7 @@ export default class Recorder extends Component {
 			newAudioName: 'unknown.mp3',
             isAlertShown: false,
 			playing: false,
-			host: 'http://192.168.1.90:5000/'
+			host: 'http://192.168.28.88:5000/'
         };
 
         //this.onPress = this.onPress.bind(this)

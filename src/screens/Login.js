@@ -13,7 +13,8 @@ import {
     TextInput,
     View,
     StyleSheet,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 import { tsImportEqualsDeclaration } from '@babel/types';
 
@@ -27,7 +28,7 @@ export default class Login extends Component {
         this.state = {email: '', password: ''};
     }
 
-    handleLogin() {
+    handleLogin = () => {
         fetch('https://teller-app-project.herokuapp.com/users/signin', {
         method: 'POST',
         headers: {
@@ -39,15 +40,19 @@ export default class Login extends Component {
             password: this.state.password,
         }),
         })
-        .then((responseStatus) => {
-            if(responseStatus.status == 200) {
-                this.props.navigation.navigate('Home');
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();        
             } else {
-                this.props.navigation.navigate('Home');
-            }
+                throw new Error(res.status)
+            }            
+        })
+        .then(resJson => {
+            AsyncStorage.setItem('JWT_TOKEN', resJson.token);
+            this.props.navigation.navigate('Home');            
         })
         .catch((error) => {
-            console.log(error);
+            console.warn("Error: " + error);
         });
     }
 

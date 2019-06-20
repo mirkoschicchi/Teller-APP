@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, AsyncStorage} from 'react-native';
 
 import MyButton from '../components/MyButton';
 
@@ -10,26 +10,29 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
     }
+    signOut = () => {
+        AsyncStorage.removeItem('JWT_TOKEN');
+        this.props.navigation.navigate('Login');
+    }
     
     render() {
         return(
-            <ScrollView style={styles.container}>
-                <Text style={styles.titleStyle}>Home</Text>
-                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
-                <MyButton 
-                    text={'Record Page'}
-                    onPress={() => this.props.navigation.navigate('Recorder')}>
-                </MyButton>
-                <MyButton 
-                    text={'Remote Control'}
-                    onPress={() => this.props.navigation.navigate('RemoteControl')}>
-                </MyButton>
-                <MyButton 
-                    text={'Log out'}
-                    onPress={() => this.props.navigation.navigate('Login')}>
-                </MyButton>
-                
-            </ScrollView>
+                <ScrollView style={styles.container}>
+                    <Text style={styles.titleStyle}>Home</Text>
+                    <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                    <MyButton 
+                        text={'Record Page'}
+                        onPress={() => this.props.navigation.navigate('Recorder')}>
+                    </MyButton>
+                    <MyButton 
+                        text={'Remote Control'}
+                        onPress={() => this.props.navigation.navigate('RemoteControl')}>
+                    </MyButton>
+                    <MyButton 
+                        text={'Log out'}
+                        onPress={() => this.signOut()}>
+                    </MyButton>              
+                </ScrollView>       
         );
     }
 }

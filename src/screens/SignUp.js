@@ -21,7 +21,8 @@ import {
     Button,
     StyleSheet,
     Picker,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 
 export default class SignUp extends Component {
@@ -43,15 +44,19 @@ export default class SignUp extends Component {
                 code: this.state.code
             }),
             })
-            .then((responseStatus) => {
-                console.warn(responseStatus)
-                if(responseStatus.status == 200) {
-                    this.props.navigation.navigate('Home');
-                }
+            .then((res) => {
+                if (res.status == 200) {
+                    return res.json();        
+                } else {
+                    throw new Error(res.status)
+                } 
+            })
+            .then(resJson => {
+                AsyncStorage.setItem('JWT_TOKEN', resJson.token);
+                this.props.navigation.navigate('Home');            
             })
             .catch((error) => {
-                console.log(error);
-                this.props.navigation.navigate('SignUp');
+                console.warn("Error: " + error);
             });
     }
 
