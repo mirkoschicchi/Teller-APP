@@ -185,21 +185,23 @@ export default class RemoteControl extends Component {
     render() {
         return(
             <ScrollView style={styles.container}>
-                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
-                <Text style={styles.titleStyle}>Remote Control</Text>
+                <View>
+                    <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                    <Text style={styles.titleStyle}>Remote Control</Text>
+                </View>           
                 
-				<View style={{flexDirection: 'row', alignItems:"center"}}>
+				<View style={{flexDirection: 'row', justifyContent:"center", flex:1}}>
                     {this.state.playing == 0?
-                        <Icon style={{flex:1}} name="play-circle" size={40} color="#f2a06e" onPress={() => this.playOrResume(this.state.selected)}/>:
-                        <Icon style={{flex:1}} name="pause-circle" size={40} color="#f2a06e" onPress={() => this.pause()}/>
+                        <Icon style={{flex:1, position: 'relative', left: 100}} name="play-circle" size={60} color="#f2a06e" onPress={() => this.playOrResume(this.state.selected)}/>:
+                        <Icon style={{flex:1, position: 'relative', left: 100}} name="pause-circle" size={60} color="#f2a06e" onPress={() => this.pause()}/>
                     }
                     
-                    <Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stop()}/>
+                    <Icon style={{flex:1, position:'relative', left: 20}} name="stop-circle" size={60} color="#f2a06e" onPress={() => this.stop()}/>
                 </View>
-                <View style={{flexDirection: 'row', alignItems:"center", justifyContent:"flex-start", alignContent:"flex-start"}}>
-                    <Icon style={{flex:1}} name="volume-high" size={40} color="#f2a06e"/>
+                <View style={{flex:1,flexDirection: 'row', justifyContent:"center", alignContent:"center",}}>
+                    <Icon style={{flex:1, position:'relative', left:'10%'}} name="volume-low" size={40} color="#f2a06e"/>
                     <Slider
-                        style={{width: 200, height: 40, flex:1}}
+                        style={{ height: 40, flex:3}}
                         minimumValue={0}
                         maximumValue={100}
                         value={this.state.volume}
@@ -210,7 +212,8 @@ export default class RemoteControl extends Component {
                             this.changeVolume(val)}
                         }
                         thumbTintColor="#f2a06e"
-                    />     
+                    />
+                    <Icon style={{flex:1,position:'relative', right:'10%'}} name="volume-high" size={40} color="#f2a06e"/>     
                 </View>
                 <Speed 
                     speed={this.state.speed}
@@ -231,7 +234,7 @@ export default class RemoteControl extends Component {
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<ListItem
-                            item={item}
+                            item={item}s
                             deleteMedia={() => this.delete(item.id)}
                             onPress={() => this.state.selected == item.id ? this.setState({selected: -1 }) : this.setState({selected: item.id})}
                             option={this.state.selected == item.id ? true : false}
@@ -259,7 +262,6 @@ const styles = StyleSheet.create({
 		flex: 1,
         flexDirection: 'row',
         margin: 5,
-        borderWidth:3
     },
     titleStyle : {
         fontSize:40, 
