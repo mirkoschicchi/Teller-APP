@@ -10,6 +10,7 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
     }
+    
     signOut = () => {
         AsyncStorage.removeItem('JWT_TOKEN');
         this.props.navigation.navigate('Login');
@@ -17,22 +18,26 @@ export default class Home extends Component {
     
     render() {
         return(
-                <ScrollView style={styles.container}>
-                    <Text style={styles.titleStyle}>Home</Text>
-                    <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
-                    <MyButton 
-                        text={'Record Page'}
-                        onPress={() => this.props.navigation.navigate('Recorder')}>
-                    </MyButton>
-                    <MyButton 
-                        text={'Remote Control'}
-                        onPress={() => this.props.navigation.navigate('RemoteControl')}>
-                    </MyButton>
-                    <MyButton 
-                        text={'Log out'}
-                        onPress={() => this.signOut()}>
-                    </MyButton>              
-                </ScrollView>       
+            <ScrollView style={styles.container}>
+                <Text style={styles.titleStyle}>Home</Text>
+                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
+                <MyButton 
+                    text={'Record Page'}
+                    onPress={() => this.props.navigation.navigate('Recorder')}>
+                </MyButton>
+                <MyButton 
+                    text={'Remote Control'}
+                    onPress={() => this.props.navigation.navigate('RemoteControl')}>
+                </MyButton>
+                <MyButton 
+                    text={'Shop'}
+                    onPress={() => this.props.navigation.navigate('Shop')}>
+                </MyButton> 
+                <MyButton 
+                    text={'Log out'}
+                    onPress={() => this.signOut()}>
+                </MyButton>              
+            </ScrollView>       
         );
     }
 }

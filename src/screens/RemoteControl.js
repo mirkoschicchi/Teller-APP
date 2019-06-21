@@ -17,7 +17,7 @@ export default class RemoteControl extends Component {
         super(props);
         this.state = {
             speed: 100,
-            host: 'http://192.168.1.90:5000/',
+            host: 'http://192.168.28.88:5000/',
             audioList: [],
             selected: -1,
             loading: false
@@ -196,10 +196,10 @@ export default class RemoteControl extends Component {
                     
                     <Icon style={{flex:1}} name="stop-circle" size={40} color="#f2a06e" onPress={() => this.stop()}/>
                 </View>
-                <View style={{flexDirection: 'row', alignItems:"center"}}>
+                <View style={{flexDirection: 'row', alignItems:"center", justifyContent:"flex-start", alignContent:"flex-start"}}>
                     <Icon style={{flex:1}} name="volume-high" size={40} color="#f2a06e"/>
                     <Slider
-                        style={{width: 200, height: 40}}
+                        style={{width: 200, height: 40, flex:1}}
                         minimumValue={0}
                         maximumValue={100}
                         value={this.state.volume}
@@ -210,9 +210,7 @@ export default class RemoteControl extends Component {
                             this.changeVolume(val)}
                         }
                         thumbTintColor="#f2a06e"
-                    />
-
-                    
+                    />     
                 </View>
                 <Speed 
                     speed={this.state.speed}
@@ -282,12 +280,10 @@ const styles = StyleSheet.create({
     },
     flatview: {
         justifyContent: 'space-around',
-        borderWidth: 2,
-        padding:5,
+        borderWidth: 1,
         flexDirection: 'row',
-        width: '95%',
         alignItems: 'center',
-        backgroundColor: '#8197ab' 
+        backgroundColor: '#8197ab',
       },
       audioTrack: {
         fontSize: 20,

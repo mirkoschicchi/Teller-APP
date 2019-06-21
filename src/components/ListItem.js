@@ -26,24 +26,23 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-around',
         borderWidth: 2,
-        padding:5,
         flexDirection: 'row',
-        width: '95%',
+        width: '100%',
         alignItems: 'center',
         backgroundColor: '#8197ab' 
       },
       containerPressed: {
         justifyContent: 'space-around',
         borderWidth: 2,
-        padding:5,
         flexDirection: 'row',
-        width: '95%',
+        width: '100%',
         alignItems: 'center',
         backgroundColor: '#fde789' 
       },
       audioTrack: {
         fontSize: 20,
         color: 'white',
-        flex:2
+		flex:2,
+		paddingLeft:4
       },
 })

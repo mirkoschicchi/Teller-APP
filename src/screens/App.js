@@ -8,6 +8,7 @@ import SignUp from './SignUp.js';
 import Recorder from './Recorder';
 import RemoteControl from './RemoteControl';
 import AuthLoading from './AuthLoading';
+import Shop from './Shop';
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -16,7 +17,8 @@ const AppNavigator = createSwitchNavigator(
 		SignUp: SignUp,
 		Recorder: Recorder,
 		RemoteControl: RemoteControl,
-		AuthLoading: AuthLoading
+		AuthLoading: AuthLoading,
+		Shop: Shop
 	},
 	{
 		initialRouteName: 'AuthLoading'
@@ -26,8 +28,6 @@ const AppNavigator = createSwitchNavigator(
 	const AppContainer = createAppContainer(AppNavigator);
 
 	export default class App extends Component {
-
-    
 
     render() {
       return <AppContainer/>;

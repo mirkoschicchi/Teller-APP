@@ -354,7 +354,6 @@ const styles = StyleSheet.create({
 	flatview: {
     justifyContent: 'space-around',
     borderWidth: 2,
-    padding:5,
     flexDirection: 'row',
     width: '95%',
     alignItems: 'center',
@@ -363,7 +362,8 @@ const styles = StyleSheet.create({
   audioTrack: {
     fontSize: 20,
     color: 'white',
-    flex:2
+	flex:2,
+	paddingLeft: 5
   },
   headerList: {
     fontSize:25,

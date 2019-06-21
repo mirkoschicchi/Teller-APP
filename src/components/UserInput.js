@@ -9,15 +9,16 @@ export default class UserInput extends Component {
       <View style={styles.inputWrapper}>
         <Image source={this.props.source} style={styles.inlineImg} />
         <TextInput
-          style={styles.input}
-          placeholder={this.props.placeholder}
-          onChangeText={this.props.onChangeText}
-          secureTextEntry={this.props.secureTextEntry}
-          autoCorrect={this.props.autoCorrect}
-          autoCapitalize={this.props.autoCapitalize}
-          returnKeyType={this.props.returnKeyType}
-          placeholderTextColor="white"
-          underlineColorAndroid="transparent"
+			style={styles.input}
+			placeholder={this.props.placeholder}
+			onChangeText={this.props.onChangeText}
+			secureTextEntry={this.props.secureTextEntry}
+			autoCorrect={this.props.autoCorrect}
+			autoCapitalize={this.props.autoCapitalize}
+			returnKeyType={this.props.returnKeyType}
+			placeholderTextColor="white"
+			underlineColorAndroid="transparent"
+			value={this.props.value}
         />
       </View>
     );

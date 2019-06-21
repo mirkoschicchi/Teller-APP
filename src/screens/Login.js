@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
@@ -14,7 +13,8 @@ import {
     View,
     StyleSheet,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    Switch
 } from 'react-native';
 import { tsImportEqualsDeclaration } from '@babel/types';
 
@@ -25,7 +25,19 @@ export default class Login extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {email: '', password: ''};
+        this.state = {email: '', password: '', switchValue: false};
+    }
+
+    async componentDidMount() {
+        var emailStored = await AsyncStorage.getItem('EMAIL');
+        var passwordStored = await AsyncStorage.getItem('PASSWORD');
+        if(emailStored != undefined && passwordStored != undefined) {
+            this.setState({
+                email: emailStored,
+                password: passwordStored,
+                switchValue: true
+            })
+        }
     }
 
     handleLogin = () => {
@@ -49,12 +61,23 @@ export default class Login extends Component {
         })
         .then(resJson => {
             AsyncStorage.setItem('JWT_TOKEN', resJson.token);
+            if(this.state.switchValue == true) {
+                AsyncStorage.setItem('EMAIL', this.state.email.trim());
+                AsyncStorage.setItem('PASSWORD', this.state.password);
+            } else {
+                AsyncStorage.removeItem('EMAIL');
+                AsyncStorage.removeItem('PASSWORD');
+            }
             this.props.navigation.navigate('Home');            
         })
         .catch((error) => {
             console.warn("Error: " + error);
         });
     }
+
+    toggleSwitch = value => {
+        this.setState({ switchValue: value });
+    };
 
     render() {
         return (
@@ -65,18 +88,31 @@ export default class Login extends Component {
                     source={usernameImg}
                     style={{margin:5}}
                     placeholder={"Email"}
+                    autoCapitalize={'none'}
                     onChangeText={(email) => this.setState({email: email})}
-                    value={this.state.username}>
+                    value={this.state.email}>
                 </UserInput>
                 <UserInput
                     source={passwordImg}
                     style={{margin:5}}
                     placeholder={"Password"}
                     secureTextEntry={true}
+                    value={this.state.password}
                     onChangeText={(password) => this.setState({password: password})}>
                 </UserInput>
+                <View style={styles.switchStyle}>
+                    <Switch 
+                        onValueChange={this.toggleSwitch}   
+                        value = {this.state.switchValue}
+                        style={{alignContent: 'flex-start'}}
+                        thumbColor='#fff'
+                        trackColor={{true: '#f2a06e', false: '#8197ab'}}
+                        />
+                    <Text style={{color: 'white'}}>Remember me?</Text>
+                </View>
+                
                 <View style={styles.buttonStyleContainer}>
-                    <MyButton
+                    <MyButton   
                         text={"Sign Up"}
                         onPress={() => this.props.navigation.navigate('SignUp')}
                     />
@@ -84,9 +120,6 @@ export default class Login extends Component {
                         text={"Login"}                   
                         onPress={() => this.handleLogin()}
                     />
-                </View>
-
-                <View style={styles.container}>
                 </View>
             </ScrollView>
             )
@@ -115,5 +148,11 @@ const styles = StyleSheet.create({
         height: 60,
         top: 3,
         left: 5
+    },
+    switchStyle: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',       
+        alignItems: 'flex-start',
     }
   });
