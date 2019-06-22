@@ -41,7 +41,7 @@ export default class Recorder extends Component {
 			newAudioName: 'unknown.mp3',
             isAlertShown: false,
 			playing: false,
-			host: 'http://192.168.28.88:5000/'
+			host: 'http://192.168.12.1:5000/'
         };
 
         //this.onPress = this.onPress.bind(this)
@@ -50,16 +50,25 @@ export default class Recorder extends Component {
         this.audioRecorderPlayer.setSubscriptionDuration(0.09); // optional. Default is 0.1
     }
 
-    componentDidMount() {
-		RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
-        .then((files) => {
-
-			this.setState({audioList: files});
-        })
-        .catch(error => {
-          console.warn(error)
-        })
+    async componentDidMount() {
+		const granted = await PermissionsAndroid.request(
+			PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+			{
+			  title: 'Permissions for write access',
+			  message: 'Give permission to your storage to write a file',
+			},
+		);
+		if(granted) {
+			RNFetchBlob.fs.ls('/storage/emulated/0/Teller/')
+       		.then((files) => {
+				this.setState({audioList: files});
+			})
+			.catch(error => {
+			console.warn(error)
+			})
+		}
 	}
+		
 
 	componentWillUnmount() {
 		this.stopCurrentPlay();

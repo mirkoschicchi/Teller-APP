@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import usernameImg from '../images/username.png';
 import passwordImg from '../images/password.png';
+import emailImg from '../images/email.png';
 
 import UserInput from '../components/UserInput.js';
 import MyButton from '../components/MyButton.js';
@@ -9,7 +9,6 @@ import MyButton from '../components/MyButton.js';
 import {
     ScrollView,
     Text,
-    TextInput,
     View,
     StyleSheet,
     Image,
@@ -35,10 +34,11 @@ export default class Login extends Component {
             this.setState({
                 email: emailStored,
                 password: passwordStored,
-                switchValue: true
+                switchValue: true,
             })
         }
     }
+
 
     handleLogin = () => {
         fetch('https://teller-app-project.herokuapp.com/users/signin', {
@@ -71,7 +71,9 @@ export default class Login extends Component {
             this.props.navigation.navigate('Home');            
         })
         .catch((error) => {
-            console.warn("Error: " + error);
+            this.setState({
+                error: true
+            })
         });
     }
 
@@ -85,7 +87,7 @@ export default class Login extends Component {
                 <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                 <Text style={styles.titleStyle}>Login</Text>
                 <UserInput
-                    source={usernameImg}
+                    source={emailImg}
                     style={{margin:5}}
                     placeholder={"Email"}
                     autoCapitalize={'none'}
@@ -121,6 +123,13 @@ export default class Login extends Component {
                         onPress={() => this.handleLogin()}
                     />
                 </View>
+
+                {this.state.error?
+                    <View style={{alignItems:'center'}}>
+                        <Text style={{color: 'red'}}>Bad email and/or password</Text>
+                    </View>:
+                    null
+                }
             </ScrollView>
             )
     }

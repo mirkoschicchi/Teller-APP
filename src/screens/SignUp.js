@@ -28,7 +28,7 @@ import {
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
-        this.state = {username: '', password: '', email: '', code: '', phone_number: '', date:"01-01-2019"}
+        this.state = {password: '', email: '', code: '', errorEmail: false, errorCode: false, errorCodeNotFound: false}
     }
 
     signUp() {
@@ -47,7 +47,14 @@ export default class SignUp extends Component {
             .then((res) => {
                 if (res.status == 200) {
                     return res.json();        
-                } else {
+                } else if (res.status == 403) {
+                    this.setState({errorEmail: true, errorCode: false, errorCodeNotFound: false})
+                    throw new Error(res.status)
+                } else if (res.status == 404) {
+                    this.setState({errorCodeNotFound: true, errorCode: false, errorEmail: false})
+                    throw new Error(res.status)
+                } else if (res.status == 409) {
+                    this.setState({errorCode: true, errorCodeNotFound: false, errorEmail: false})
                     throw new Error(res.status)
                 } 
             })
@@ -56,7 +63,7 @@ export default class SignUp extends Component {
                 this.props.navigation.navigate('Home');            
             })
             .catch((error) => {
-                console.warn("Error: " + error);
+                console.log("Error: " + error);
             });
     }
 
@@ -107,6 +114,7 @@ export default class SignUp extends Component {
                 <UserInput
                     source={emailImg}
                     placeholder={"Email"}
+                    autoCapitalize={'none'}
                     onChangeText={(email) => this.setState({ email: email })}>
                 </UserInput>
                 <UserInput
@@ -133,7 +141,25 @@ export default class SignUp extends Component {
                         text={"Sign-Up"}
                         onPress={() => this.signUp()}
                     />
-                </View>                 
+                </View>  
+                {this.state.errorEmail?
+                    <View style={{alignItems:'center'}}>
+                        <Text style={{color: 'red'}}>Email is already in use</Text>
+                    </View>:
+                    null
+                }  
+                {this.state.errorCode?
+                    <View style={{alignItems:'center'}}>
+                        <Text style={{color: 'red'}}>Code is already in use</Text>
+                    </View>:
+                    null
+                } 
+                {this.state.errorCodeNotFound?
+                    <View style={{alignItems:'center'}}>
+                        <Text style={{color: 'red'}}>Code not found</Text>
+                    </View>:
+                    null
+                }              
             </ScrollView>
         )
     }

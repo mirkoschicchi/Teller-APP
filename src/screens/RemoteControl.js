@@ -17,7 +17,7 @@ export default class RemoteControl extends Component {
         super(props);
         this.state = {
             speed: 100,
-            host: 'http://192.168.28.88:5000/',
+            host: 'http://192.168.12.1:5000/',
             audioList: [],
             selected: -1,
             loading: false
