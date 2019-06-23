@@ -7,24 +7,70 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MyButton from '../components/MyButton';
 
+import RNFetchBlob from 'rn-fetch-blob';
+
 export default class Shop extends Component {
     constructor(props) {
         super(props);
-        this.state = {audioList: ['123123123_Cappuccetto Rosso', '234234234_Biancaneve', '123123123_Pinocchio']}
+        this.state = {audioList: [], userToken:''}
     }
 
     componentDidMount() {
-        // fetch('https://teller-app-project.herokuapp.com/users/signin', {
-
-        // })
-        // .then()
-        // .catch((error) => {
-        //     console.warn('Error: ' + error);
-        // })
+        this.getMedia();   
     }
 
-    buy = () => {
+    getMedia = async () => {
+        const userToken = await AsyncStorage.getItem('JWT_TOKEN');
+        fetch('https://teller-app-project.herokuapp.com/users/dashboard/media/', {
+            method: 'GET',
+            headers: {
+                'Authorization': userToken,
+				'Accept': 'application/json',
+				'Content-Type': 'multipart/form-data',
+			},
+        })
+        .then((response) => {
+			return response.json(); 
+		})	
+		.then((responseJson) => {
+            this.setState({
+                audioList: responseJson.media,
+                userToken: userToken
+            })
+		})
+		.catch((error) => {
+			console.warn("Error: " + error)
+		})
+    }
+
+    buy = (item) => {
         console.warn("Bought")
+        RNFetchBlob.config({
+            // response data will be saved to this path if it has access right.
+            fileCache: true,
+            useDownloadManager : true,
+            path : 'file://' + '/storage/emulated/0/Teller/ciao.mp3'
+        })
+        fetch('https://teller-app-project.herokuapp.com/users/dashboard/media/download?name=' + item.name + '&length=' + item.length + '&price='+item.price, {
+            method: 'GET',
+            headers: {
+                'Authorization': this.state.userToken,
+			},
+        })
+        .then((res) => {
+
+
+            for(var propertyName in res) {
+                // propertyName is what you want
+                // you can get the value like this: myObject[propertyName]
+                console.warn("File saved in path: " + propertyName)
+            }
+            console.warn(res.status)
+                        
+		})
+		.catch((error) => {
+			console.warn("Error: " + error)
+		})
     }
 
     showDetails = () => {
@@ -45,23 +91,25 @@ export default class Shop extends Component {
 					data={this.state.audioList}
 					renderItem={({item}) =>
 						<View style={styles.flatview}>
-							<Text style={styles.audioTrack}>{item.split('_')[1]}</Text>
-                            <Text style={styles.detail}>{"10 min"}</Text>
-                            <Text style={styles.detail}>{"1€"}</Text>
+							<Text style={styles.audioTrack}>{item.name}</Text>
+                            <Text style={styles.detail}>{item.length}m</Text>
+                            <Text style={styles.detail}>{item.price}€</Text>
                             <OptionsMenu
                                 customButton={<Icon name="dots-vertical" size={30} color="#f2a06e" />}
                                 destructiveIndex={1}
                                 options={["Buy and download", "Outline", "Cancel"]}
-                                actions={[this.buy, this.showDetails, this.cancel]}/>
+                                actions={[() => this.buy(item), this.showDetails, this.cancel]}/>
 						</View>
 					}
 					keyExtractor={(item, index) => index.toString()}
 				></FlatList>
 
-                <MyButton
-                    text={'Home'}
-                    onPress={() => {this.props.navigation.navigate('Home')}}j
-                />
+                <View style={{alignItems: 'center'}}>
+                    <MyButton
+                        text={'Home'}
+                        onPress={() => {this.props.navigation.navigate('Home')}}j
+                    />
+                </View> 
                              
             </ScrollView> 
         )

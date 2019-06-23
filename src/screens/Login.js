@@ -12,15 +12,18 @@ import {
     View,
     StyleSheet,
     Image,
-    AsyncStorage,
     Switch
 } from 'react-native';
-import { tsImportEqualsDeclaration } from '@babel/types';
+
+console.disableYellowBox = true;
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Login extends Component {
 	static navigationOptions = {
-		title: 'Login Page',
+        title: 'Login Page',
     };
+    
     
     constructor(props) {
         super(props);

@@ -22,13 +22,14 @@ import {
     StyleSheet,
     Picker,
     Image,
-    AsyncStorage
 } from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
-        this.state = {password: '', email: '', code: '', errorEmail: false, errorCode: false, errorCodeNotFound: false}
+        this.state = {password: '', email: '', code: '', errorEmail: false, errorCode: false, errorCodeNotFound: false, errorGeneral: false}
     }
 
     signUp() {
@@ -48,15 +49,18 @@ export default class SignUp extends Component {
                 if (res.status == 200) {
                     return res.json();        
                 } else if (res.status == 403) {
-                    this.setState({errorEmail: true, errorCode: false, errorCodeNotFound: false})
+                    this.setState({errorEmail: true, errorCode: false, errorCodeNotFound: false, errorGeneral:false})
                     throw new Error(res.status)
                 } else if (res.status == 404) {
-                    this.setState({errorCodeNotFound: true, errorCode: false, errorEmail: false})
+                    this.setState({errorCodeNotFound: true, errorCode: false, errorEmail: false, errorGeneral:false})
                     throw new Error(res.status)
                 } else if (res.status == 409) {
-                    this.setState({errorCode: true, errorCodeNotFound: false, errorEmail: false})
+                    this.setState({errorCode: true, errorCodeNotFound: false, errorEmail: false, errorGeneral: false})
                     throw new Error(res.status)
-                } 
+                } else if (res.status == 400) {
+                    this.setState({errorGeneral: true, errorEmail: false, errorCode: false, errorCodeNotFound: false,})
+                    throw new Error(res.status)
+                }
             })
             .then(resJson => {
                 AsyncStorage.setItem('JWT_TOKEN', resJson.token);
@@ -159,7 +163,13 @@ export default class SignUp extends Component {
                         <Text style={{color: 'red'}}>Code not found</Text>
                     </View>:
                     null
-                }              
+                }   
+                {this.state.errorGeneral?
+                    <View style={{alignItems:'center'}}>
+                        <Text style={{color: 'red'}}>Error! Missing required fields</Text>
+                    </View>:
+                    null
+                }           
             </ScrollView>
         )
     }

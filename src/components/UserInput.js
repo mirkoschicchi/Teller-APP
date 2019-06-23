@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   inputWrapper: {
-    borderWidth:2,
     margin: 5,
     flex: 1,
   },

@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
       },
       containerPressed: {
         justifyContent: 'space-around',
-        borderWidth: 2,
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',

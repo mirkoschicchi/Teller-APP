@@ -17,7 +17,7 @@ export default class RemoteControl extends Component {
         super(props);
         this.state = {
             speed: 100,
-            host: 'http://192.168.12.1:5000/',
+            host: 'http://192.168.1.90:5000/',
             audioList: [],
             selected: -1,
             loading: false
@@ -75,6 +75,7 @@ export default class RemoteControl extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
+            if(this.state.audioList.length != 0)
             this.setState({
                 playing: 1,
                 paused: 0
@@ -184,7 +185,7 @@ export default class RemoteControl extends Component {
 
     render() {
         return(
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} >
                 <View>
                     <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                     <Text style={styles.titleStyle}>Remote Control</Text>
@@ -244,11 +245,13 @@ export default class RemoteControl extends Component {
 				></FlatList>
 
 
-
-                <MyButton
-                    text={'Home'}
-                    onPress={() => {this.props.navigation.navigate('Home')}}j
-                />
+                <View style={{alignItems: 'center'}}>
+                    <MyButton
+                        text={'Home'}
+                        onPress={() => {this.props.navigation.navigate('Home')}}j
+                    />
+                </View>   
+                
                 
                 
                 

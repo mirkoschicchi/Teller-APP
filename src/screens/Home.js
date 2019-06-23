@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, AsyncStorage} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Image} from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import MyButton from '../components/MyButton';
 
 export default class Home extends Component {
@@ -18,7 +19,7 @@ export default class Home extends Component {
     
     render() {
         return(
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} contentContainerStyle={{alignItems:'center'}}>
                 <Text style={styles.titleStyle}>Home</Text>
                 <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>
                 <MyButton 

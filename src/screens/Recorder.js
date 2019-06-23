@@ -41,7 +41,7 @@ export default class Recorder extends Component {
 			newAudioName: 'unknown.mp3',
             isAlertShown: false,
 			playing: false,
-			host: 'http://192.168.12.1:5000/'
+			host: 'http://192.168.1.90:5000/'
         };
 
         //this.onPress = this.onPress.bind(this)
@@ -120,7 +120,7 @@ export default class Recorder extends Component {
 		id = uuidv4();
 
         const path = Platform.select({
-          android: '/storage/emulated/0/Teller/' + id + '_' + this.state.newAudioName,
+          android: '/storage/emulated/0/Teller/' + id + '_' + this.state.newAudioName + '.mp3',
         });
         const uri = await this.audioRecorderPlayer.startRecorder(path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {

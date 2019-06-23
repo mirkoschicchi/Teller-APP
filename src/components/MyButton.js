@@ -34,6 +34,5 @@ MyButton.propTypes = {
 		margin: 5,
 		backgroundColor: '#f2a06e',
 		borderRadius:20,
-		borderWidth: 3
 	}
   });
