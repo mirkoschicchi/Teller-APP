@@ -31,6 +31,18 @@ const AppNavigator = createSwitchNavigator(
 	export default class App extends Component {
 
 	async componentDidMount() {
+		RNFetchBlob.fs.exists('/storage/emulated/0/Teller/')
+		.then((exist) => {
+			if(!exist) {
+				RNFetchBlob.fs.mkdir('/storage/emulated/0/Teller/')
+				.then(() => {  })
+				.catch((err) => { console.warn("Error: " + err) })
+			} 
+		})
+		.catch((err) => { console.warn("Error: " + err)  })
+
+
+
 		await PermissionsAndroid.request(
 			PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 			{

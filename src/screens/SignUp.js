@@ -22,6 +22,7 @@ import {
     StyleSheet,
     Picker,
     Image,
+    ToastAndroid
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -29,7 +30,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
-        this.state = {password: '', email: '', code: '', errorEmail: false, errorCode: false, errorCodeNotFound: false, errorGeneral: false}
+        this.state = {password: '', email: '', code: ''}
     }
 
     signUp() {
@@ -49,16 +50,32 @@ export default class SignUp extends Component {
                 if (res.status == 200) {
                     return res.json();        
                 } else if (res.status == 403) {
-                    this.setState({errorEmail: true, errorCode: false, errorCodeNotFound: false, errorGeneral:false})
+                    ToastAndroid.showWithGravity(
+                        "Email is already in use!",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                    );
                     throw new Error(res.status)
                 } else if (res.status == 404) {
-                    this.setState({errorCodeNotFound: true, errorCode: false, errorEmail: false, errorGeneral:false})
+                    ToastAndroid.showWithGravity(
+                        "Code not found",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                    );
                     throw new Error(res.status)
                 } else if (res.status == 409) {
-                    this.setState({errorCode: true, errorCodeNotFound: false, errorEmail: false, errorGeneral: false})
+                    ToastAndroid.showWithGravity(
+                        "Code is already in use",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                    );
                     throw new Error(res.status)
                 } else if (res.status == 400) {
-                    this.setState({errorGeneral: true, errorEmail: false, errorCode: false, errorCodeNotFound: false,})
+                    ToastAndroid.showWithGravity(
+                        "Error! Missing required fields",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                    );
                     throw new Error(res.status)
                 }
             })
@@ -88,7 +105,7 @@ export default class SignUp extends Component {
                 </View>
                 <View style={styles.inputContainer}>
                     <DatePicker
-                        style={{flex: 1, backgroundColor:'#8197ab', borderWidth:3, margin: 5 }}
+                        style={{flex: 1, backgroundColor:'#8197ab', margin: 5 }}
                         androidMode='calendar'
                         date={this.state.date}
                         mode="date"
@@ -145,31 +162,7 @@ export default class SignUp extends Component {
                         text={"Sign-Up"}
                         onPress={() => this.signUp()}
                     />
-                </View>  
-                {this.state.errorEmail?
-                    <View style={{alignItems:'center'}}>
-                        <Text style={{color: 'red'}}>Email is already in use</Text>
-                    </View>:
-                    null
-                }  
-                {this.state.errorCode?
-                    <View style={{alignItems:'center'}}>
-                        <Text style={{color: 'red'}}>Code is already in use</Text>
-                    </View>:
-                    null
-                } 
-                {this.state.errorCodeNotFound?
-                    <View style={{alignItems:'center'}}>
-                        <Text style={{color: 'red'}}>Code not found</Text>
-                    </View>:
-                    null
-                }   
-                {this.state.errorGeneral?
-                    <View style={{alignItems:'center'}}>
-                        <Text style={{color: 'red'}}>Error! Missing required fields</Text>
-                    </View>:
-                    null
-                }           
+                </View>             
             </ScrollView>
         )
     }
@@ -180,7 +173,6 @@ const styles = StyleSheet.create({
 	inputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderWidth:2,
         margin: 5
     },
     titleStyle : {

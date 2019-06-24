@@ -46,10 +46,17 @@ export default class Shop extends Component {
     buy = (item) => {
         console.warn("Bought")
         RNFetchBlob.config({
+            addAndroidDownloads : {
+                useDownloadManager : true, //uses the device's native download manager.
+                notification : true,
+                // mime: 'text/plain',
+                title : "Notification Title", // Title of download notification.
+                path: RNFetchBlob.fs.dirs.DocumentDir + "/me_.opus", // this is the path where your download file will be in
+                description : 'Downloading file.'
+            },
+                
             // response data will be saved to this path if it has access right.
             fileCache: true,
-            useDownloadManager : true,
-            path : 'file://' + '/storage/emulated/0/Teller/ciao.mp3'
         })
         fetch('https://teller-app-project.herokuapp.com/users/dashboard/media/download?name=' + item.name + '&length=' + item.length + '&price='+item.price, {
             method: 'GET',
@@ -65,7 +72,7 @@ export default class Shop extends Component {
                 // you can get the value like this: myObject[propertyName]
                 console.warn("File saved in path: " + propertyName)
             }
-            console.warn(res.status)
+            console.warn(res.path())
                         
 		})
 		.catch((error) => {

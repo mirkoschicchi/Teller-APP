@@ -234,7 +234,7 @@ export default class Recorder extends Component {
 		let formData = new FormData();
 		formData.append('media', {
 			uri: path_to_a_file,
-			name:  name,
+			name:  item,
 			type: 'audio/mp3',
 		});
 		
@@ -248,12 +248,18 @@ export default class Recorder extends Component {
 			body: formData
 		})
 		.then((response) => {
-			return response.json(); 
+			if(response.status == 200) {
+				return response.json(); 
+			} else if (res.status == 500) {
+				throw new Error(res.status)
+			}		
 		})	
 		.then((responseJson) => {
+			alert('Media sent to Teller')
 			console.warn(responseJson)
 		})
 		.catch((error) => {
+			alert('Error! The media is already available on Teller')
 			console.warn("Error: " + error)
 		})
 		 

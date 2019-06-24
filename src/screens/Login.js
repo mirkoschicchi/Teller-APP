@@ -12,10 +12,11 @@ import {
     View,
     StyleSheet,
     Image,
-    Switch
+    Switch,
+    ToastAndroid
 } from 'react-native';
 
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -74,9 +75,11 @@ export default class Login extends Component {
             this.props.navigation.navigate('Home');            
         })
         .catch((error) => {
-            this.setState({
-                error: true
-            })
+            ToastAndroid.showWithGravity(
+                "Wrong email and/or password!",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+              );
         });
     }
 
@@ -126,13 +129,6 @@ export default class Login extends Component {
                         onPress={() => this.handleLogin()}
                     />
                 </View>
-
-                {this.state.error?
-                    <View style={{alignItems:'center'}}>
-                        <Text style={{color: 'red'}}>Bad email and/or password</Text>
-                    </View>:
-                    null
-                }
             </ScrollView>
             )
     }
