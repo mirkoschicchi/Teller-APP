@@ -7,7 +7,6 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import io.github.traviskn.rnuuidgenerator.RNUUIDGeneratorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
-import com.polidea.reactnativeble.BlePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.dooboolab.RNAudioRecorderPlayerPackage;
 import com.rnim.rn.audio.ReactNativeAudioPackage;
@@ -38,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNUUIDGeneratorPackage(),
             new VectorIconsPackage(),
             new ReactSliderPackage(),
-            new BlePackage(),
             new RNFetchBlobPackage(),
             new RNAudioRecorderPlayerPackage(),
             new ReactNativeAudioPackage(),
