@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, AsyncStorage, FlatList, Alert} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Button, Image, AsyncStorage, FlatList, Alert, PermissionsAndroid, ToastAndroid, Platform} from 'react-native';
 
 import OptionsMenu from "react-native-options-menu";
 
@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MyButton from '../components/MyButton';
 
 import RNFetchBlob from 'rn-fetch-blob';
+
+import {uuidv4} from '../utilities/Uuid';
 
 export default class Shop extends Component {
     constructor(props) {
@@ -41,43 +43,53 @@ export default class Shop extends Component {
 		.catch((error) => {
 			console.warn("Error: " + error)
 		})
-    }
+    }   
 
-    buy = (item) => {
-        console.warn("Bought")
-        RNFetchBlob.config({
-            addAndroidDownloads : {
-                useDownloadManager : true, //uses the device's native download manager.
-                notification : true,
-                // mime: 'text/plain',
-                title : "Notification Title", // Title of download notification.
-                path: RNFetchBlob.fs.dirs.DocumentDir + "/me_.opus", // this is the path where your download file will be in
-                description : 'Downloading file.'
-            },
-                
-            // response data will be saved to this path if it has access right.
-            fileCache: true,
-        })
-        fetch('https://teller-app-project.herokuapp.com/users/dashboard/media/download?name=' + item.name + '&length=' + item.length + '&price='+item.price, {
-            method: 'GET',
-            headers: {
-                'Authorization': this.state.userToken,
-			},
-        })
-        .then((res) => {
-
-
-            for(var propertyName in res) {
-                // propertyName is what you want
-                // you can get the value like this: myObject[propertyName]
-                console.warn("File saved in path: " + propertyName)
+    buy = async (item) => {
+        id = uuidv4();
+        try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title: "Storage Permission",
+                message: "App needs access to memory to download the file "
+              }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.warn("Bought")
+                RNFetchBlob.config({
+                    // response data will be saved to this path if it has access right.
+                    fileCache: true,
+                    path: '/storage/emulated/0/Teller/' + id + '_' + item.name, // this is the path where your download file will be in
+                    description : 'Downloading file.'                      
+                })
+                .fetch('GET', 'https://teller-app-project.herokuapp.com/users/dashboard/media/download?name=' + item.name + '&length=' + item.length + '&price='+item.price, {
+                    'Authorization': this.state.userToken,    
+                })
+                .then((res) => {
+                    ToastAndroid.showWithGravity(
+                        "Media downloaded successfully!",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                    );
+                    console.warn(res.path())                 
+                })
+                .catch((error) => {
+                    console.warn("Error: " + error)
+                })
+            } else {
+              Alert.alert(
+                "Permission Denied!",
+                "You need to give storage permission to download the file"
+              );
             }
-            console.warn(res.path())
-                        
-		})
-		.catch((error) => {
-			console.warn("Error: " + error)
-		})
+          } catch (err) {
+            console.warn(err);
+          }
+
+
+
+        
     }
 
     showDetails = () => {

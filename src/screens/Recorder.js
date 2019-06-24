@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, Platform, PermissionsAndroid, FlatList} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, TextInput, Button, Image, Platform, PermissionsAndroid, FlatList, ToastAndroid} from 'react-native';
 import AudioRecord from 'react-native-audio-record';
 import Permissions from 'react-native-permissions';
 import Sound from 'react-native-sound';
@@ -255,11 +255,19 @@ export default class Recorder extends Component {
 			}		
 		})	
 		.then((responseJson) => {
-			alert('Media sent to Teller')
+			ToastAndroid.showWithGravity(
+				"Media sent to Teller!",
+				ToastAndroid.SHORT,
+				ToastAndroid.CENTER
+			);
 			console.warn(responseJson)
 		})
 		.catch((error) => {
-			alert('Error! The media is already available on Teller')
+			ToastAndroid.showWithGravity(
+				"Error! The media is already available on Teller",
+				ToastAndroid.SHORT,
+				ToastAndroid.CENTER
+			);
 			console.warn("Error: " + error)
 		})
 		 
