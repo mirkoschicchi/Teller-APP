@@ -35,6 +35,10 @@ export default class Home extends Component {
                     onPress={() => this.props.navigation.navigate('Shop')}>
                 </MyButton> 
                 <MyButton 
+                    text={'Parental Control'}
+                    onPress={() => this.props.navigation.navigate('ParentalControl')}>
+                </MyButton>  
+                <MyButton 
                     text={'Log out'}
                     onPress={() => this.signOut()}>
                 </MyButton>              
@@ -48,7 +52,6 @@ const styles = StyleSheet.create({
 		flex: 1,
         flexDirection: 'row',
         margin: 5,
-        borderWidth:3
     },
     titleStyle : {
         fontSize:40, 

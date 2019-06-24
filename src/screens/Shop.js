@@ -104,7 +104,12 @@ export default class Shop extends Component {
         return (
             <ScrollView style={styles.container}>
                 <Text style={styles.titleStyle}>Shop</Text>
-                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>    
+                <Image style={styles.iconStyle} source={require('../images/logo.png')}></Image>  
+                <View style={{flexDirection: 'row', backgroundColor:'#aaa'}}>
+                    <Text style={{flex:2, fontSize:16,textAlign:'center',fontWeight:'bold'}}>Title</Text>
+                    <Text style={{flex:1, fontSize:16,textAlign:'center',fontWeight:'bold'}}>Duration</Text>
+                    <Text style={{flex:1, fontSize:16,textAlign:'left', fontWeight:'bold'}}>Price</Text>
+                </View>  
                 <FlatList 
                     ItemSeparatorComponent={ () => <View style={ { width: '100%', height: 2, backgroundColor: '#303c4a' } } /> }  
 					data={this.state.audioList}

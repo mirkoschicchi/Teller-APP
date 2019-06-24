@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
       audioTrack: {
         fontSize: 20,
         color: 'white',
-		flex:2,
+		flex:4,
 		paddingLeft:4
       },
 })

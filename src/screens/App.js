@@ -10,6 +10,11 @@ import Recorder from './Recorder';
 import RemoteControl from './RemoteControl';
 import AuthLoading from './AuthLoading';
 import Shop from './Shop';
+import ParentalControl from './ParentalControl';
+
+import RNFetchBlob from 'rn-fetch-blob';
+
+console.disableYellowBox = true;
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -19,7 +24,8 @@ const AppNavigator = createSwitchNavigator(
 		Recorder: Recorder,
 		RemoteControl: RemoteControl,
 		AuthLoading: AuthLoading,
-		Shop: Shop
+		Shop: Shop,
+		ParentalControl: ParentalControl
 	},
 	{
 		initialRouteName: 'AuthLoading'
@@ -33,9 +39,10 @@ const AppNavigator = createSwitchNavigator(
 	async componentDidMount() {
 		RNFetchBlob.fs.exists('/storage/emulated/0/Teller/')
 		.then((exist) => {
+			console.warn("Exist?? " + exist)
 			if(!exist) {
 				RNFetchBlob.fs.mkdir('/storage/emulated/0/Teller/')
-				.then(() => {  })
+				.then((ris) => { console.warn("Created the folder") })
 				.catch((err) => { console.warn("Error: " + err) })
 			} 
 		})
